@@ -1,0 +1,95 @@
+/*
+ * MotionToggle — Style
+ * Dyskretny przełącznik reduced motion.
+ */
+
+.toggle {
+    /* Pozycja — prawy dolny róg, dyskretnie */
+    position: fixed;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    z-index: 100;
+
+    /* Wygląd — subtelny, minimalistyczny */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 50%;
+
+    color: var(--color-text-subtle);
+    cursor: pointer;
+
+    transition: background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        opacity 0.15s ease;
+
+    /* Bardzo subtelne — prawie niewidoczne */
+    opacity: 0.5;
+}
+
+.toggle:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-muted);
+}
+
+.toggle:focus-visible {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--color-bg),
+        0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Stan aktywny — reduced motion włączone */
+.toggle.active {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.15);
+    color: var(--color-accent);
+}
+
+.toggle.active:hover {
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.icon {
+    flex-shrink: 0;
+}
+
+/* Wskaźnik systemowych preferencji */
+.systemIndicator {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 6px;
+    color: var(--color-accent);
+    opacity: 0.8;
+}
+
+/* Reduced motion — brak animacji na samym toggle */
+@media (prefers-reduced-motion: reduce) {
+    .toggle {
+        transition: none;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .toggle {
+        bottom: var(--spacing-sm);
+        right: var(--spacing-sm);
+        width: 32px;
+        height: 32px;
+    }
+
+    .icon {
+        width: 14px;
+        height: 14px;
+    }
+}

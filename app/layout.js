@@ -1,9 +1,10 @@
 import { Geist } from "next/font/google";
 import "./globals.css";
+import { MotionProvider } from "@/contexts/MotionContext";
+import MotionToggle from "@/components/MotionToggle";
 
 /**
- * Font Inter-like (Geist) z Google Fonts
- * Geist to font zaprojektowany przez Vercel, inspirowany Inter.
+ * Font Geist z Vercel — nowoczesny, czytelny.
  */
 const geist = Geist({
   subsets: ["latin"],
@@ -13,7 +14,6 @@ const geist = Geist({
 
 /**
  * Metadata dla SEO
- * Tytul i opis strony widoczne w wynikach wyszukiwania.
  */
 export const metadata = {
   title: "Czy AI powinna decydować za ludzi? | Refleksja",
@@ -35,7 +35,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pl">
       <body className={geist.variable}>
-        {children}
+        <MotionProvider>
+          {children}
+          <MotionToggle />
+        </MotionProvider>
       </body>
     </html>
   );

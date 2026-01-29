@@ -4,10 +4,12 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./ClosingSection.module.css";
 
 /**
- * ClosingSection — Podsumowanie narracji z efektami scroll-driven.
+ * ClosingSection — Podsumowanie narracji.
  * 
- * Elementy pojawiają się sekwencyjnie podczas scrollowania,
- * dając cytatowi i wnioskowi więcej przestrzeni do "wybrzmienia".
+ * Dłuższa sekcja dla spokojnej kulminacji:
+ * - Cytat pojawia się pierwszy i trwa dłużej
+ * - Wniosek pojawia się z opóźnieniem
+ * - Footer jako delikatne zamknięcie
  */
 export default function ClosingSection() {
     const sectionRef = useRef(null);
@@ -21,7 +23,7 @@ export default function ClosingSection() {
             const rect = section.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
 
-            // Progress bazowany na pozycji sekcji w viewport
+            // Progress bazowany na pozycji sekcji
             const scrolled = viewportHeight - rect.top;
             const total = viewportHeight + rect.height;
             const rawProgress = scrolled / total;
@@ -35,14 +37,14 @@ export default function ClosingSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Animacje bazowane na progress:
-    // Quote pojawia się pierwsze (0-0.4)
-    // Conclusion pojawia się drugie (0.3-0.7)
-    // Footer pojawia się ostatni (0.6-1)
+    // Animacje z większym rozłożeniem czasowym dla wybrzmienia:
+    // Quote: 0 - 0.5 (dłużej widoczny)
+    // Conclusion: 0.35 - 0.75
+    // Footer: 0.65 - 1
 
-    const quoteProgress = Math.min(1, progress * 2.5);
-    const conclusionProgress = Math.min(1, Math.max(0, (progress - 0.3) * 2.5));
-    const footerProgress = Math.min(1, Math.max(0, (progress - 0.6) * 2.5));
+    const quoteProgress = Math.min(1, progress * 2);
+    const conclusionProgress = Math.min(1, Math.max(0, (progress - 0.35) * 2.5));
+    const footerProgress = Math.min(1, Math.max(0, (progress - 0.65) * 3));
 
     return (
         <section ref={sectionRef} className={styles.section}>
@@ -52,7 +54,7 @@ export default function ClosingSection() {
                     className={styles.quote}
                     style={{
                         opacity: quoteProgress,
-                        transform: `translateY(${(1 - quoteProgress) * 40}px)`,
+                        transform: `translateY(${(1 - quoteProgress) * 30}px)`,
                     }}
                 >
                     <span className={styles.quoteMark}>"</span>
@@ -65,7 +67,7 @@ export default function ClosingSection() {
                     className={styles.conclusion}
                     style={{
                         opacity: conclusionProgress,
-                        transform: `translateY(${(1 - conclusionProgress) * 30}px)`,
+                        transform: `translateY(${(1 - conclusionProgress) * 24}px)`,
                     }}
                 >
                     Sztuczna inteligencja nie jest ani zbawcą, ani zagrożeniem.
@@ -79,7 +81,7 @@ export default function ClosingSection() {
                     className={styles.footer}
                     style={{
                         opacity: footerProgress,
-                        transform: `translateY(${(1 - footerProgress) * 20}px)`,
+                        transform: `translateY(${(1 - footerProgress) * 16}px)`,
                     }}
                 >
                     <p className={styles.credit}>

@@ -5,13 +5,17 @@ import styles from "./NarrativeSection.module.css";
 
 /**
  * Rozbudowana sekwencja narracyjna — przykłady decyzji AI.
- * Każdy przykład to osobny "moment" z wolnym tempem pojawiania się.
+ * 
+ * Każdy element ma przypisaną "wagę" wpływającą na to,
+ * ile czasu scrollowania zajmuje. Dzięki temu pytania 
+ * i refleksje trwają dłużej, a przykłady przechodzą szybciej.
  */
 const narrativeSequence = [
-    // Sekcja 1: Wprowadzenie
+    // Sekcja 1: Wprowadzenie — wolne tempo
     {
         id: "intro",
         type: "intro",
+        weight: 1.5, // Dłuższe
         label: null,
         title: "Każdego dnia algorytmy podejmują miliony decyzji.",
         description: null,
@@ -19,15 +23,17 @@ const narrativeSequence = [
     {
         id: "intro-2",
         type: "thought",
+        weight: 1.3,
         label: null,
         title: "Większości z nich nawet nie zauważasz.",
         description: null,
     },
 
-    // Sekcja 2: Przykłady konkretne
+    // Sekcja 2: Przykłady — zróżnicowane tempo
     {
         id: "medical",
         type: "example",
+        weight: 1.0, // Standardowe
         label: "Medycyna",
         title: "AI analizuje prześwietlenie.",
         description: "W niektórych szpitalach algorytm wykrywa nowotwory szybciej niż radiolog.",
@@ -35,6 +41,7 @@ const narrativeSequence = [
     {
         id: "medical-reflection",
         type: "question",
+        weight: 1.4, // Dłuższe — pytanie wymaga zastanowienia
         label: null,
         title: "Ale czy maszyna rozumie strach pacjenta?",
         description: null,
@@ -43,6 +50,7 @@ const narrativeSequence = [
     {
         id: "finance",
         type: "example",
+        weight: 0.9, // Nieco szybsze
         label: "Finanse",
         title: "Algorytm ocenia Twoją zdolność kredytową.",
         description: "Banki używają AI do przewidywania ryzyka.",
@@ -50,6 +58,7 @@ const narrativeSequence = [
     {
         id: "finance-reflection",
         type: "thought",
+        weight: 1.2,
         label: null,
         title: "Model nie widzi Twojej historii — widzi statystyki.",
         description: null,
@@ -58,6 +67,7 @@ const narrativeSequence = [
     {
         id: "transport",
         type: "example",
+        weight: 1.0,
         label: "Transport",
         title: "Samochód autonomiczny podejmuje decyzję w ułamku sekundy.",
         description: "W sytuacji zagrożenia AI musi wybrać.",
@@ -65,6 +75,7 @@ const narrativeSequence = [
     {
         id: "transport-reflection",
         type: "question",
+        weight: 1.5, // Ważne pytanie — więcej czasu
         label: null,
         title: "Kto ponosi odpowiedzialność za jej wybór?",
         description: null,
@@ -73,6 +84,7 @@ const narrativeSequence = [
     {
         id: "justice",
         type: "example",
+        weight: 1.0,
         label: "Wymiar sprawiedliwości",
         title: "System sugeruje wyrok.",
         description: "W USA algorytmy oceniają ryzyko recydywy.",
@@ -80,6 +92,7 @@ const narrativeSequence = [
     {
         id: "justice-reflection",
         type: "question",
+        weight: 1.4,
         label: null,
         title: "Czy dane historyczne mogą być sprawiedliwe?",
         description: null,
@@ -88,15 +101,17 @@ const narrativeSequence = [
     {
         id: "work",
         type: "example",
+        weight: 1.1,
         label: "Rekrutacja",
         title: "AI przegląda Twoje CV.",
         description: "Zanim człowiek zobaczy Twoje zgłoszenie, algorytm już podjął wstępną decyzję.",
     },
 
-    // Sekcja 3: Podsumowanie
+    // Sekcja 3: Podsumowanie — bardzo wolne tempo dla wybrzmienia
     {
         id: "summary",
         type: "conclusion",
+        weight: 1.6,
         label: null,
         title: "To nie jest przyszłość.",
         description: null,
@@ -104,20 +119,18 @@ const narrativeSequence = [
     {
         id: "summary-2",
         type: "conclusion-accent",
+        weight: 2.0, // Najdłuższe — kulminacja
         label: null,
         title: "To dzieje się teraz.",
         description: null,
     },
 ];
 
+// Oblicz całkowitą wagę dla normalizacji
+const totalWeight = narrativeSequence.reduce((sum, item) => sum + item.weight, 0);
+
 /**
- * NarrativeSection — Rozbudowana sticky sekcja narracyjna.
- * 
- * Mechanizm:
- * - Bardzo długi kontener (wiele 100vh) dla wolnego tempa
- * - Każdy "moment" ma swój czas na ekranie
- * - Płynne przejścia fade między momentami
- * - Różne typy: example, question, thought, conclusion
+ * NarrativeSection — Sticky sekcja narracyjna z ważonym rytmem.
  */
 export default function NarrativeSection() {
     const containerRef = useRef(null);
@@ -133,22 +146,28 @@ export default function NarrativeSection() {
             const containerHeight = container.offsetHeight;
             const viewportHeight = window.innerHeight;
 
-            // Pozycja w sekcji (0 do 1)
             const scrolled = -rect.top;
             const scrollableHeight = containerHeight - viewportHeight;
             const totalProgress = Math.min(1, Math.max(0, scrolled / scrollableHeight));
 
-            // Który element jest aktywny
-            const totalItems = narrativeSequence.length;
-            const progressPerItem = 1 / totalItems;
-            const currentIndex = Math.min(
-                totalItems - 1,
-                Math.floor(totalProgress / progressPerItem)
-            );
+            // Znajdź aktywny element na podstawie wag
+            let accumulatedWeight = 0;
+            let currentIndex = 0;
+            let progressWithinItem = 0;
 
-            // Progress w ramach aktywnego elementu (0-1)
-            const itemStart = currentIndex * progressPerItem;
-            const progressWithinItem = (totalProgress - itemStart) / progressPerItem;
+            for (let i = 0; i < narrativeSequence.length; i++) {
+                const itemWeightNormalized = narrativeSequence[i].weight / totalWeight;
+
+                if (totalProgress < accumulatedWeight + itemWeightNormalized) {
+                    currentIndex = i;
+                    progressWithinItem = (totalProgress - accumulatedWeight) / itemWeightNormalized;
+                    break;
+                }
+
+                accumulatedWeight += itemWeightNormalized;
+                currentIndex = i;
+                progressWithinItem = 1;
+            }
 
             setActiveIndex(currentIndex);
             setItemProgress(Math.min(1, Math.max(0, progressWithinItem)));
@@ -162,26 +181,30 @@ export default function NarrativeSection() {
 
     const currentItem = narrativeSequence[activeIndex];
 
-    // Opacity bazowana na pozycji w ramach elementu:
-    // fade in (0-0.2), full (0.2-0.8), fade out (0.8-1)
+    // Opacity: fade in/out na krawędziach
     let opacity = 1;
-    if (itemProgress < 0.15) {
-        opacity = itemProgress / 0.15;
-    } else if (itemProgress > 0.85) {
-        opacity = (1 - itemProgress) / 0.15;
+    if (itemProgress < 0.12) {
+        opacity = itemProgress / 0.12;
+    } else if (itemProgress > 0.88) {
+        opacity = (1 - itemProgress) / 0.12;
     }
 
-    // Subtelny scale dla dynamiki
-    const scale = 0.98 + itemProgress * 0.04;
+    // Subtelny scale
+    const scale = 0.97 + itemProgress * 0.06;
+
+    // Oblicz całkowity postęp dla paska
+    let totalProgressForBar = 0;
+    for (let i = 0; i < activeIndex; i++) {
+        totalProgressForBar += narrativeSequence[i].weight / totalWeight;
+    }
+    totalProgressForBar += (narrativeSequence[activeIndex].weight / totalWeight) * itemProgress;
 
     return (
         <section ref={containerRef} className={styles.container}>
             <div className={styles.sticky}>
                 <div className={styles.content}>
-                    {/* Label sekcji */}
                     <p className={styles.sectionLabel}>Gdzie dziś decyduje AI?</p>
 
-                    {/* Aktywny moment */}
                     <div
                         className={styles.narrative}
                         style={{
@@ -200,13 +223,10 @@ export default function NarrativeSection() {
                         </article>
                     </div>
 
-                    {/* Wskaźnik postępu — linia */}
                     <div className={styles.progressBar}>
                         <div
                             className={styles.progressFill}
-                            style={{
-                                width: `${((activeIndex + itemProgress) / narrativeSequence.length) * 100}%`
-                            }}
+                            style={{ width: `${totalProgressForBar * 100}%` }}
                         />
                     </div>
                 </div>

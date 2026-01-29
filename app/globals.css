@@ -2,9 +2,8 @@
  * DESIGN SYSTEM — AI Decisions
  * ============================
  * Minimalistyczna paleta kolorów inspirowana estetyką Apple.
- * Ciemne tło z wysokim kontrastem dla tekstu.
  * 
- * v2.0 — Dopracowana typografia, mikro-animacje, accessibility
+ * v3.0 — Final polish: reduced motion toggle, refined rhythm
  */
 
 :root {
@@ -13,24 +12,22 @@
   --color-bg-elevated: #141414;
   --color-text: #fafafa;
   --color-text-muted: #a0a0a0;
-  /* Zwiększony kontrast: było #888 */
   --color-text-subtle: #666666;
-  /* Zwiększony kontrast: było #555 */
   --color-accent: #3b82f6;
   --color-accent-soft: rgba(59, 130, 246, 0.12);
 
-  /* Typografia — dopracowana hierarchia */
+  /* Typografia */
   --font-display: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-body: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Rozmiary tekstu — większy rozrzut dla lepszej hierarchii */
+  /* Rozmiary tekstu — zróżnicowana hierarchia */
   --text-hero: clamp(3.5rem, 10vw, 8rem);
   --text-section: clamp(2rem, 5vw, 4rem);
   --text-heading: clamp(1.4rem, 2.5vw, 2.2rem);
   --text-body: clamp(1rem, 1.25vw, 1.15rem);
   --text-small: 0.8125rem;
 
-  /* Letter-spacing — zróżnicowany dla hierarchii */
+  /* Letter-spacing — hierarchia */
   --tracking-tight: -0.03em;
   --tracking-normal: -0.01em;
   --tracking-wide: 0.15em;
@@ -48,16 +45,28 @@
   --spacing-xl: 8rem;
   --spacing-section: 20vh;
 
-  /* Animacje */
+  /* Animacje — spójny system */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-slow: 0.9s;
-  --duration-medium: 0.5s;
+  --ease-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Timings — zróżnicowane dla różnych elementów */
+  --duration-micro: 0.12s;
+  /* Hover, focus */
   --duration-fast: 0.25s;
-  --duration-micro: 0.15s;
+  /* Małe elementy */
+  --duration-medium: 0.5s;
+  /* Średnie elementy */
+  --duration-slow: 0.9s;
+  /* Duże sekcje */
+  --duration-slower: 1.2s;
+  /* Entrance animations */
 }
 
-/* Reset i baza */
+/* ============================================
+   RESET I BAZA
+   ============================================ */
+
 *,
 *::before,
 *::after {
@@ -82,9 +91,13 @@ body {
 }
 
 /* ============================================
-   ACCESSIBILITY — Reduced Motion
+   REDUCED MOTION — Dwa tryby
+   
+   1. prefers-reduced-motion (systemowy)
+   2. .reduced-motion (manualny toggle)
    ============================================ */
 
+/* Systemowe preferencje */
 @media (prefers-reduced-motion: reduce) {
 
   *,
@@ -101,29 +114,46 @@ body {
   }
 }
 
+/* Manualne wyłączenie animacji przez toggle */
+body.reduced-motion *,
+body.reduced-motion *::before,
+body.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: var(--duration-micro) !important;
+  scroll-behavior: auto !important;
+}
+
+body.reduced-motion {
+  scroll-behavior: auto;
+}
+
+/* Zachowaj podstawowe hovery nawet przy reduced motion */
+body.reduced-motion button,
+body.reduced-motion a {
+  transition-duration: var(--duration-micro) !important;
+}
+
 /* ============================================
-   FOCUS STYLES — Subtelne, zgodne z estetyką
+   FOCUS STYLES — Subtelne, estetyczne
    ============================================ */
 
-/* Domyślnie ukryty focus */
 :focus {
   outline: none;
 }
 
-/* Widoczny focus tylko dla keyboard navigation */
 :focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px var(--color-bg),
-    0 0 0 4px rgba(59, 130, 246, 0.5);
+    0 0 0 4px rgba(59, 130, 246, 0.4);
   border-radius: 4px;
-  transition: box-shadow var(--duration-fast) ease;
+  transition: box-shadow var(--duration-fast) var(--ease-gentle);
 }
 
-/* Subtelniejszy focus dla przycisków */
 button:focus-visible,
 [role="button"]:focus-visible {
   box-shadow: 0 0 0 2px var(--color-bg),
-    0 0 0 3px rgba(59, 130, 246, 0.4);
+    0 0 0 3px rgba(59, 130, 246, 0.35);
 }
 
 /* ============================================
@@ -142,12 +172,12 @@ button:focus-visible,
 }
 
 /* ============================================
-   SCROLL REVEAL ANIMATIONS
+   SCROLL REVEAL — Subtelne wejścia
    ============================================ */
 
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(20px);
   transition: opacity var(--duration-slow) var(--ease-out-expo),
     transform var(--duration-slow) var(--ease-out-expo);
 }
@@ -157,32 +187,32 @@ button:focus-visible,
   transform: translateY(0);
 }
 
-/* Staggered animations dla dzieci */
+/* Staggered animations */
 .reveal-stagger>* {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(12px);
   transition: opacity var(--duration-medium) var(--ease-out-expo),
     transform var(--duration-medium) var(--ease-out-expo);
 }
 
 .reveal-stagger.visible>*:nth-child(1) {
-  transition-delay: 0.08s;
+  transition-delay: 0.06s;
 }
 
 .reveal-stagger.visible>*:nth-child(2) {
-  transition-delay: 0.16s;
+  transition-delay: 0.12s;
 }
 
 .reveal-stagger.visible>*:nth-child(3) {
-  transition-delay: 0.24s;
+  transition-delay: 0.18s;
 }
 
 .reveal-stagger.visible>*:nth-child(4) {
-  transition-delay: 0.32s;
+  transition-delay: 0.24s;
 }
 
 .reveal-stagger.visible>*:nth-child(5) {
-  transition-delay: 0.40s;
+  transition-delay: 0.30s;
 }
 
 .reveal-stagger.visible>* {
@@ -195,7 +225,7 @@ button:focus-visible,
    ============================================ */
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -203,19 +233,19 @@ button:focus-visible,
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-text-subtle);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2.5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* ============================================
-   SELECTION — Subtelny akcent
+   SELECTION
    ============================================ */
 
 ::selection {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.25);
   color: var(--color-text);
 }
