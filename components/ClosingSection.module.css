@@ -1,10 +1,12 @@
 /*
  * ClosingSection — Style
  * Podsumowanie narracji z scroll-driven reveals.
+ * v2.0 — Dopracowana typografia, subtelniejsze efekty
  */
 
 .section {
-    min-height: 120vh;
+    /* Dłuższa sekcja dla dramatycznego zakończenia */
+    min-height: 130vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,7 +22,7 @@
 
 .quote {
     font-size: var(--text-heading);
-    font-weight: 500;
+    font-weight: var(--weight-medium);
     font-style: italic;
     line-height: 1.5;
     color: var(--color-text);
@@ -28,26 +30,30 @@
     position: relative;
     padding-top: var(--spacing-lg);
     will-change: opacity, transform;
+    letter-spacing: var(--tracking-normal);
 }
 
-/* Dekoracyjny cudzysłów */
+/* Dekoracyjny cudzysłów — subtelniejszy */
 .quoteMark {
     position: absolute;
-    top: -0.2em;
+    top: -0.3em;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 6rem;
+    font-size: 5rem;
     color: var(--color-accent);
-    opacity: 0.2;
+    opacity: 0.15;
     font-style: normal;
     line-height: 1;
-    font-family: Georgia, serif;
+    font-family: Georgia, "Times New Roman", serif;
+    user-select: none;
 }
 
 .conclusion {
     font-size: var(--text-body);
+    font-weight: var(--weight-normal);
     color: var(--color-text-muted);
-    line-height: 1.9;
+    line-height: 1.85;
+    letter-spacing: var(--tracking-normal);
     max-width: 600px;
     margin: 0 auto var(--spacing-xl);
     will-change: opacity, transform;
@@ -55,14 +61,26 @@
 
 .footer {
     padding-top: var(--spacing-xl);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
     will-change: opacity, transform;
 }
 
 .credit {
     font-size: var(--text-small);
+    font-weight: var(--weight-normal);
     color: var(--color-text-subtle);
     letter-spacing: 0.05em;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .quote,
+    .conclusion,
+    .footer {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
 
 /* Responsive */
@@ -74,9 +92,10 @@
 
     .quote {
         font-size: var(--text-body);
+        line-height: 1.6;
     }
 
     .quoteMark {
-        font-size: 4rem;
+        font-size: 3.5rem;
     }
 }

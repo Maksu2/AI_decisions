@@ -1,10 +1,12 @@
 /*
  * TransitionSection — Style
  * "Oddychające" sekcje przejściowe z pojedynczym zdaniem.
+ * v2.0 — Zróżnicowane tempo, subtelniejsze przejścia
  */
 
 .section {
-    min-height: 100vh;
+    /* Dłuższe sekcje przejściowe dla wyraźniejszych pauz */
+    min-height: 120vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,22 +15,24 @@
 }
 
 .content {
-    max-width: 900px;
+    max-width: 850px;
     text-align: center;
     will-change: opacity, transform;
 }
 
 .text {
-    font-size: clamp(1.5rem, 4vw, 3rem);
-    font-weight: 500;
-    line-height: 1.4;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+    font-weight: var(--weight-medium);
+    line-height: 1.35;
+    letter-spacing: var(--tracking-normal);
 }
 
 .subtext {
     font-size: var(--text-body);
+    font-weight: var(--weight-normal);
     color: var(--color-text-muted);
     margin-top: var(--spacing-md);
+    letter-spacing: var(--tracking-normal);
 }
 
 /* Warianty kolorystyczne */
@@ -38,7 +42,7 @@
 
 .accent .text {
     background: linear-gradient(135deg,
-            var(--color-text) 0%,
+            var(--color-text) 30%,
             var(--color-accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -47,15 +51,29 @@
 
 .dim .text {
     color: var(--color-text-muted);
+    font-weight: var(--weight-normal);
 }
 
 .dim .subtext {
     color: var(--color-text-subtle);
 }
 
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .content {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .section {
+        min-height: 100vh;
         padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .text {
+        font-size: clamp(1.25rem, 6vw, 2rem);
     }
 }

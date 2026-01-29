@@ -3,6 +3,8 @@
  * ============================
  * Minimalistyczna paleta kolorów inspirowana estetyką Apple.
  * Ciemne tło z wysokim kontrastem dla tekstu.
+ * 
+ * v2.0 — Dopracowana typografia, mikro-animacje, accessibility
  */
 
 :root {
@@ -10,22 +12,34 @@
   --color-bg: #0a0a0a;
   --color-bg-elevated: #141414;
   --color-text: #fafafa;
-  --color-text-muted: #888888;
-  --color-text-subtle: #555555;
+  --color-text-muted: #a0a0a0;
+  /* Zwiększony kontrast: było #888 */
+  --color-text-subtle: #666666;
+  /* Zwiększony kontrast: było #555 */
   --color-accent: #3b82f6;
-  --color-accent-soft: rgba(59, 130, 246, 0.15);
-  
-  /* Typografia */
+  --color-accent-soft: rgba(59, 130, 246, 0.12);
+
+  /* Typografia — dopracowana hierarchia */
   --font-display: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-body: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  
-  /* Rozmiary tekstu */
-  --text-hero: clamp(3rem, 8vw, 7rem);
+
+  /* Rozmiary tekstu — większy rozrzut dla lepszej hierarchii */
+  --text-hero: clamp(3.5rem, 10vw, 8rem);
   --text-section: clamp(2rem, 5vw, 4rem);
-  --text-heading: clamp(1.5rem, 3vw, 2.5rem);
-  --text-body: clamp(1rem, 1.5vw, 1.25rem);
-  --text-small: 0.875rem;
-  
+  --text-heading: clamp(1.4rem, 2.5vw, 2.2rem);
+  --text-body: clamp(1rem, 1.25vw, 1.15rem);
+  --text-small: 0.8125rem;
+
+  /* Letter-spacing — zróżnicowany dla hierarchii */
+  --tracking-tight: -0.03em;
+  --tracking-normal: -0.01em;
+  --tracking-wide: 0.15em;
+
+  /* Font weights */
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
   /* Spacing */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
@@ -33,16 +47,20 @@
   --spacing-lg: 4rem;
   --spacing-xl: 8rem;
   --spacing-section: 20vh;
-  
+
   /* Animacje */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-slow: 0.8s;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-slow: 0.9s;
   --duration-medium: 0.5s;
-  --duration-fast: 0.3s;
+  --duration-fast: 0.25s;
+  --duration-micro: 0.15s;
 }
 
 /* Reset i baza */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -50,20 +68,68 @@
 
 html {
   scroll-behavior: smooth;
-  /* Smooth scroll dla całej strony */
 }
 
 body {
   font-family: var(--font-body);
+  font-weight: var(--weight-normal);
   background-color: var(--color-bg);
   color: var(--color-text);
-  line-height: 1.6;
+  line-height: 1.65;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Utility classes */
+/* ============================================
+   ACCESSIBILITY — Reduced Motion
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ============================================
+   FOCUS STYLES — Subtelne, zgodne z estetyką
+   ============================================ */
+
+/* Domyślnie ukryty focus */
+:focus {
+  outline: none;
+}
+
+/* Widoczny focus tylko dla keyboard navigation */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-bg),
+    0 0 0 4px rgba(59, 130, 246, 0.5);
+  border-radius: 4px;
+  transition: box-shadow var(--duration-fast) ease;
+}
+
+/* Subtelniejszy focus dla przycisków */
+button:focus-visible,
+[role="button"]:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-bg),
+    0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -75,12 +141,15 @@ body {
   border: 0;
 }
 
-/* Animacje fade-in dla scroll reveal */
+/* ============================================
+   SCROLL REVEAL ANIMATIONS
+   ============================================ */
+
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(24px);
   transition: opacity var(--duration-slow) var(--ease-out-expo),
-              transform var(--duration-slow) var(--ease-out-expo);
+    transform var(--duration-slow) var(--ease-out-expo);
 }
 
 .reveal.visible {
@@ -89,44 +158,64 @@ body {
 }
 
 /* Staggered animations dla dzieci */
-.reveal-stagger > * {
+.reveal-stagger>* {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(16px);
   transition: opacity var(--duration-medium) var(--ease-out-expo),
-              transform var(--duration-medium) var(--ease-out-expo);
+    transform var(--duration-medium) var(--ease-out-expo);
 }
 
-.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.1s; }
-.reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.2s; }
-.reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.3s; }
-.reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.4s; }
-.reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.5s; }
+.reveal-stagger.visible>*:nth-child(1) {
+  transition-delay: 0.08s;
+}
 
-.reveal-stagger.visible > * {
+.reveal-stagger.visible>*:nth-child(2) {
+  transition-delay: 0.16s;
+}
+
+.reveal-stagger.visible>*:nth-child(3) {
+  transition-delay: 0.24s;
+}
+
+.reveal-stagger.visible>*:nth-child(4) {
+  transition-delay: 0.32s;
+}
+
+.reveal-stagger.visible>*:nth-child(5) {
+  transition-delay: 0.40s;
+}
+
+.reveal-stagger.visible>* {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Focus styles dla dostępności */
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 4px;
-}
+/* ============================================
+   SCROLLBAR — Minimalistyczny
+   ============================================ */
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-text-subtle);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-muted);
+}
+
+/* ============================================
+   SELECTION — Subtelny akcent
+   ============================================ */
+
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: var(--color-text);
 }

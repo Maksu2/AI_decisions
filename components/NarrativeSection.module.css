@@ -1,12 +1,17 @@
 /*
  * NarrativeSection — Style
  * Rozbudowana sticky sekcja z wieloma momentami narracyjnymi.
+ * v2.0 — Zróżnicowany rytm, dopracowana typografia
  */
 
 .container {
-    /* Bardzo długa sekcja dla wolnego tempa scrollowania */
-    /* 13 elementów × ~120vh na element = ~1560vh */
-    min-height: 1400vh;
+    /* Zróżnicowana długość sekcji dla zmiennego rytmu:
+   * - intro/thought: wolniejsze (dłuższy scroll)
+   * - examples: standardowe tempo
+   * - questions: krótkie pauzy
+   * - conclusion: dramatyczne spowolnienie
+   * Łącznie ~1600vh dla 13 elementów */
+    min-height: 1600vh;
     position: relative;
 }
 
@@ -31,21 +36,24 @@
 
 .sectionLabel {
     font-size: var(--text-small);
+    font-weight: var(--weight-medium);
     color: var(--color-accent);
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: var(--tracking-wide);
     margin-bottom: var(--spacing-lg);
-    opacity: 0.8;
+    opacity: 0.7;
 }
 
 /* Kontener na aktywny moment */
 .narrative {
-    min-height: 280px;
+    min-height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
     will-change: opacity, transform;
-    transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+    /* Płynniejsze przejścia */
+    transition: opacity 0.2s var(--ease-out-quint),
+        transform 0.2s var(--ease-out-quint);
 }
 
 /* Pojedynczy element narracji */
@@ -56,64 +64,72 @@
 .category {
     display: inline-block;
     font-size: var(--text-small);
+    font-weight: var(--weight-medium);
     color: var(--color-text-muted);
     background: var(--color-bg-elevated);
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: 100px;
     margin-bottom: var(--spacing-md);
+    letter-spacing: 0.02em;
 }
 
 .title {
     font-size: var(--text-section);
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-weight: var(--weight-semibold);
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
     margin-bottom: var(--spacing-md);
 }
 
 .description {
     font-size: var(--text-body);
+    font-weight: var(--weight-normal);
     color: var(--color-text-muted);
-    max-width: 600px;
+    max-width: 580px;
     margin: 0 auto;
-    line-height: 1.7;
+    line-height: 1.75;
+    letter-spacing: var(--tracking-normal);
 }
 
-/* Typy elementów — różne style */
+/* Typy elementów — zróżnicowana hierarchia */
 .intro .title,
 .thought .title {
     color: var(--color-text-muted);
-    font-weight: 400;
+    font-weight: var(--weight-normal);
     font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    letter-spacing: var(--tracking-normal);
 }
 
 .question .title {
     font-style: italic;
     color: var(--color-accent);
-    font-weight: 500;
+    font-weight: var(--weight-medium);
+    font-size: clamp(1.5rem, 4vw, 2.8rem);
 }
 
 .conclusion .title {
     color: var(--color-text-muted);
+    font-weight: var(--weight-normal);
     font-size: clamp(1.5rem, 3vw, 2.2rem);
 }
 
 .conclusion-accent .title {
     background: linear-gradient(135deg,
-            var(--color-text) 0%,
+            var(--color-text) 20%,
             var(--color-accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-size: var(--text-section);
+    font-weight: var(--weight-semibold);
 }
 
-/* Pasek postępu */
+/* Pasek postępu — subtelniejszy */
 .progressBar {
-    width: 200px;
-    height: 2px;
-    background: var(--color-text-subtle);
-    border-radius: 1px;
+    width: 180px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5px;
     margin-top: var(--spacing-xl);
     overflow: hidden;
 }
@@ -121,14 +137,25 @@
 .progressFill {
     height: 100%;
     background: var(--color-accent);
-    border-radius: 1px;
-    transition: width 0.1s ease-out;
+    border-radius: 0.5px;
+    transition: width 0.15s var(--ease-out-quint);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .narrative {
+        transition: none;
+    }
+
+    .progressFill {
+        transition: none;
+    }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .container {
-        min-height: 1200vh;
+        min-height: 1400vh;
     }
 
     .sticky {
@@ -136,14 +163,14 @@
     }
 
     .narrative {
-        min-height: 320px;
+        min-height: 340px;
     }
 
     .title {
-        font-size: clamp(1.5rem, 6vw, 2.5rem);
+        font-size: clamp(1.5rem, 7vw, 2.5rem);
     }
 
     .progressBar {
-        width: 150px;
+        width: 120px;
     }
 }
