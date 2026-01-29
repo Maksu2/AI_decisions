@@ -5,7 +5,7 @@ import styles from "./NarrativeSection.module.css";
 
 /**
  * Sekwencja narracyjna — fakty i konsekwencje.
- * Precyzyjna, rzeczowa, bez abstrakcji.
+ * Każdy temat ma swój ciężar.
  */
 const narrativeSequence = [
     {
@@ -25,14 +25,14 @@ const narrativeSequence = [
     {
         id: "medical",
         type: "example",
-        weight: 1.0,
+        weight: 1.1,
         label: "Medycyna",
         title: "Algorytm analizuje prześwietlenie.",
     },
     {
         id: "medical-consequence",
         type: "consequence",
-        weight: 1.5,
+        weight: 1.6,
         title: "Znajduje nowotwór szybciej niż lekarz. Nie potrafi powiedzieć, że będzie dobrze.",
     },
 
@@ -40,14 +40,14 @@ const narrativeSequence = [
     {
         id: "finance",
         type: "example",
-        weight: 0.9,
+        weight: 1.0,
         label: "Finanse",
         title: "System ocenia zdolność kredytową.",
     },
     {
         id: "finance-consequence",
         type: "consequence",
-        weight: 1.4,
+        weight: 1.5,
         title: "Widzi historię spłat. Nie widzi, że właśnie dostałeś pracę.",
     },
 
@@ -62,22 +62,23 @@ const narrativeSequence = [
     {
         id: "transport-consequence",
         type: "consequence",
-        weight: 1.6,
+        weight: 1.7,
         title: "Wybiera, kogo chronić. Zasady zapisano w kodzie.",
     },
 
-    // Sprawiedliwość
+    // Sprawiedliwość — najcięższy temat
     {
         id: "justice",
         type: "example",
-        weight: 1.0,
+        weight: 1.3,
         label: "Sprawiedliwość",
+        labelStyle: "heavy",
         title: "Algorytm sugeruje wyrok.",
     },
     {
         id: "justice-consequence",
         type: "consequence",
-        weight: 1.5,
+        weight: 1.8,
         title: "Uczy się z przeszłości. Przeszłość nie była sprawiedliwa.",
     },
 
@@ -92,7 +93,7 @@ const narrativeSequence = [
     {
         id: "work-consequence",
         type: "consequence",
-        weight: 1.4,
+        weight: 1.5,
         title: "Człowiek zobaczy tylko tych, których algorytm przepuścił.",
     },
 
@@ -100,13 +101,13 @@ const narrativeSequence = [
     {
         id: "summary",
         type: "conclusion",
-        weight: 2.2,
+        weight: 2.5,
         title: "To nie przyszłość.",
     },
     {
         id: "summary-2",
         type: "conclusion-accent",
-        weight: 2.8,
+        weight: 3.0,
         title: "To teraz.",
     },
 ];
@@ -162,10 +163,10 @@ export default function NarrativeSection() {
     const currentItem = narrativeSequence[activeIndex];
 
     let opacity = 1;
-    if (itemProgress < 0.1) {
-        opacity = itemProgress / 0.1;
-    } else if (itemProgress > 0.9) {
-        opacity = (1 - itemProgress) / 0.1;
+    if (itemProgress < 0.08) {
+        opacity = itemProgress / 0.08;
+    } else if (itemProgress > 0.92) {
+        opacity = (1 - itemProgress) / 0.08;
     }
 
     let totalProgressForBar = 0;
@@ -173,6 +174,11 @@ export default function NarrativeSection() {
         totalProgressForBar += narrativeSequence[i].weight / totalWeight;
     }
     totalProgressForBar += (narrativeSequence[activeIndex].weight / totalWeight) * itemProgress;
+
+    // Specjalna klasa dla Sprawiedliwości
+    const categoryClass = currentItem.labelStyle === "heavy"
+        ? `${styles.category} ${styles.categoryJustice}`
+        : styles.category;
 
     return (
         <section ref={containerRef} className={styles.container}>
@@ -184,7 +190,7 @@ export default function NarrativeSection() {
                     >
                         <article className={`${styles.item} ${styles[currentItem.type] || ""}`}>
                             {currentItem.label && (
-                                <span className={styles.category}>{currentItem.label}</span>
+                                <span className={categoryClass}>{currentItem.label}</span>
                             )}
                             <h2 className={styles.title}>{currentItem.title}</h2>
                         </article>
