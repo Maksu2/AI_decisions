@@ -4,15 +4,12 @@ import { useMotion } from "@/contexts/MotionContext";
 import styles from "./MotionToggle.module.css";
 
 /**
- * MotionToggle — Przełącznik reduced motion z jasnym komunikatem stanu.
+ * MotionToggle — Przełącznik reduced motion.
  * 
- * Wymagania:
- * - Jasny tekst komunikujący stan
- * - Wyraźna zmiana przy włączeniu
- * - Spójny estetycznie z resztą strony
+ * Tekst zawsze "Reduced motion" — zmienia się tylko stan.
  */
 export default function MotionToggle() {
-    const { reducedMotion, setReducedMotion, isSystemPreference } = useMotion();
+    const { reducedMotion, setReducedMotion } = useMotion();
 
     const handleToggle = () => {
         setReducedMotion(!reducedMotion);
@@ -23,7 +20,7 @@ export default function MotionToggle() {
             className={`${styles.toggle} ${reducedMotion ? styles.active : ""}`}
             onClick={handleToggle}
             aria-pressed={reducedMotion}
-            aria-label={reducedMotion ? "Włącz animacje" : "Wyłącz animacje"}
+            aria-label={reducedMotion ? "Wyłącz tryb reduced motion" : "Włącz tryb reduced motion"}
         >
             {/* Ikona */}
             <span className={styles.icon} aria-hidden="true">
@@ -40,15 +37,8 @@ export default function MotionToggle() {
                 )}
             </span>
 
-            {/* Tekst stanu */}
-            <span className={styles.label}>
-                {reducedMotion ? "Animacje: wyłączone" : "Animacje: włączone"}
-            </span>
-
-            {/* Wskaźnik systemowego ustawienia */}
-            {isSystemPreference && (
-                <span className={styles.systemBadge}>auto</span>
-            )}
+            {/* Tekst identyczny w obu trybach */}
+            <span className={styles.label}>Reduced motion</span>
         </button>
     );
 }

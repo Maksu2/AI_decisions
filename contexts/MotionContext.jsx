@@ -5,20 +5,19 @@ import { createContext, useContext, useState, useEffect } from "react";
 /**
  * MotionContext — Zarządzanie preferencjami animacji.
  * 
- * - Domyślnie respektuje prefers-reduced-motion z systemu
- * - Pozwala użytkownikowi nadpisać ustawienia
- * - Zapamiętuje wybór w localStorage
+ * - Domyślnie animacje są WŁĄCZONE (reducedMotion = false)
+ * - Użytkownik może włączyć reduced motion
+ * - Wybór zapisywany w localStorage
  */
 
 const MotionContext = createContext({
     reducedMotion: false,
     setReducedMotion: () => { },
-    isSystemPreference: true,
 });
 
 export function MotionProvider({ children }) {
+    // Domyślnie animacje włączone
     const [reducedMotion, setReducedMotion] = useState(false);
-    const [isSystemPreference, setIsSystemPreference] = useState(true);
     const [mounted, setMounted] = useState(false);
 
     // Inicjalizacja po stronie klienta
@@ -29,25 +28,10 @@ export function MotionProvider({ children }) {
         const stored = localStorage.getItem("reduced-motion");
 
         if (stored !== null) {
-            // Użytkownik nadpisał ustawienia
             setReducedMotion(stored === "true");
-            setIsSystemPreference(false);
-        } else {
-            // Użyj systemowych preferencji
-            const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-            setReducedMotion(mediaQuery.matches);
-
-            // Nasłuchuj zmian systemowych
-            const handler = (e) => {
-                if (isSystemPreference) {
-                    setReducedMotion(e.matches);
-                }
-            };
-
-            mediaQuery.addEventListener("change", handler);
-            return () => mediaQuery.removeEventListener("change", handler);
         }
-    }, [isSystemPreference]);
+        // Ignoruj systemowe preferencje — zawsze domyślnie animacje włączone
+    }, []);
 
     // Aktualizuj klasę na body
     useEffect(() => {
@@ -62,15 +46,7 @@ export function MotionProvider({ children }) {
 
     const handleSetReducedMotion = (value) => {
         setReducedMotion(value);
-        setIsSystemPreference(false);
         localStorage.setItem("reduced-motion", String(value));
-    };
-
-    const resetToSystemPreference = () => {
-        localStorage.removeItem("reduced-motion");
-        setIsSystemPreference(true);
-        const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-        setReducedMotion(mediaQuery.matches);
     };
 
     return (
@@ -78,8 +54,6 @@ export function MotionProvider({ children }) {
             value={{
                 reducedMotion,
                 setReducedMotion: handleSetReducedMotion,
-                isSystemPreference,
-                resetToSystemPreference,
             }}
         >
             {children}
