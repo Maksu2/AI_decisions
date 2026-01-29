@@ -55,7 +55,7 @@ export default function ClosingSection() {
                         transform: `translateY(${(1 - line2Progress) * 16}px)`,
                     }}
                 >
-                    Odpowiedzialność za nie — nie.
+                    Odpowiedzialność nie znika wraz z decyzją.
                 </p>
 
                 <div
