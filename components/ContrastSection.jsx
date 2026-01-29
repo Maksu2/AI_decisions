@@ -5,23 +5,23 @@ import styles from "./ContrastSection.module.css";
 
 /**
  * ContrastSection — Dwa sposoby istnienia decyzji.
- * Narracja, nie lista.
+ * Spokojny monolog, nie lista.
  */
 
 const humanExperience = [
-    "Decyzja zapada powoli.",
-    "Czujesz jej ciężar.",
-    "Możesz zmienić zdanie.",
-    "Błąd jest twój.",
-    "Wiesz, kto odpowiada.",
+    { text: "Decyzja zapada powoli.", emphasis: "lead" },
+    { text: "Czujesz jej ciężar.", emphasis: "normal" },
+    { text: "Możesz zmienić zdanie.", emphasis: "soft" },
+    { text: "Błąd jest twój.", emphasis: "normal" },
+    { text: "Wiesz, kto odpowiada.", emphasis: "final" },
 ];
 
 const systemExperience = [
-    "Decyzja zapada natychmiast.",
-    "Nikt jej nie czuje.",
-    "Zmiana wymaga nowego kodu.",
-    "Błąd jest statystyką.",
-    "Nikt nie odpowiada.",
+    { text: "Decyzja zapada natychmiast.", emphasis: "lead" },
+    { text: "Nikt jej nie czuje.", emphasis: "normal" },
+    { text: "Zmiana wymaga nowego kodu.", emphasis: "soft" },
+    { text: "Błąd jest statystyką.", emphasis: "normal" },
+    { text: "Nikt nie odpowiada.", emphasis: "final" },
 ];
 
 export default function ContrastSection() {
@@ -50,24 +50,29 @@ export default function ContrastSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const isHumanPhase = progress < 0.45;
-    const isSystemPhase = progress > 0.55;
+    const isHumanPhase = progress < 0.42;
+    const isSystemPhase = progress > 0.58;
     const isTransition = !isHumanPhase && !isSystemPhase;
 
-    const humanProgress = Math.min(1, progress / 0.45);
-    const systemProgress = Math.min(1, Math.max(0, (progress - 0.55) / 0.45));
+    // Wolniejszy reveal — każda linia ma swój moment
+    const humanProgress = Math.min(1, progress / 0.42);
+    const systemProgress = Math.min(1, Math.max(0, (progress - 0.58) / 0.42));
 
-    const visibleHumanLines = Math.floor(humanProgress * (humanExperience.length + 0.5));
-    const visibleSystemLines = Math.floor(systemProgress * (systemExperience.length + 0.5));
+    // Opóźnione wejście dla każdej linii
+    const getLineVisibility = (index, phaseProgress) => {
+        const lineDelay = index * 0.18;
+        const lineProgress = Math.min(1, Math.max(0, (phaseProgress - lineDelay) / 0.2));
+        return lineProgress;
+    };
 
-    const humanHeaderOpacity = isHumanPhase ? 1 : isTransition ? 1 - (progress - 0.45) * 10 : 0;
-    const systemHeaderOpacity = isSystemPhase ? 1 : isTransition ? (progress - 0.45) * 10 : 0;
+    const humanHeaderOpacity = isHumanPhase ? Math.min(1, humanProgress * 5) : isTransition ? 1 - (progress - 0.42) * 6 : 0;
+    const systemHeaderOpacity = isSystemPhase ? Math.min(1, systemProgress * 5) : isTransition ? (progress - 0.42) * 6 : 0;
 
     return (
         <section ref={containerRef} className={styles.container}>
             <div className={styles.sticky}>
                 <div className={styles.content}>
-                    {/* Człowiek */}
+                    {/* Człowiek — cieplejsza, bardziej obecna */}
                     <div
                         className={`${styles.perspective} ${styles.human}`}
                         style={{ opacity: isHumanPhase || isTransition ? 1 : 0 }}
@@ -79,22 +84,25 @@ export default function ContrastSection() {
                             Gdy decyduje człowiek
                         </h2>
                         <div className={styles.lines}>
-                            {humanExperience.map((line, index) => (
-                                <p
-                                    key={index}
-                                    className={styles.line}
-                                    style={{
-                                        opacity: visibleHumanLines > index ? 1 : 0,
-                                        transform: `translateY(${visibleHumanLines > index ? 0 : 12}px)`,
-                                    }}
-                                >
-                                    {line}
-                                </p>
-                            ))}
+                            {humanExperience.map((line, index) => {
+                                const visibility = getLineVisibility(index, humanProgress);
+                                return (
+                                    <p
+                                        key={index}
+                                        className={`${styles.line} ${styles[line.emphasis]}`}
+                                        style={{
+                                            opacity: visibility,
+                                            transform: `translateY(${(1 - visibility) * 8}px)`,
+                                        }}
+                                    >
+                                        {line.text}
+                                    </p>
+                                );
+                            })}
                         </div>
                     </div>
 
-                    {/* System */}
+                    {/* System — chłodniejsza, bardziej zdystansowana */}
                     <div
                         className={`${styles.perspective} ${styles.system}`}
                         style={{ opacity: isSystemPhase || isTransition ? 1 : 0 }}
@@ -106,18 +114,21 @@ export default function ContrastSection() {
                             Gdy decyduje system
                         </h2>
                         <div className={styles.lines}>
-                            {systemExperience.map((line, index) => (
-                                <p
-                                    key={index}
-                                    className={styles.line}
-                                    style={{
-                                        opacity: visibleSystemLines > index ? 1 : 0,
-                                        transform: `translateY(${visibleSystemLines > index ? 0 : 12}px)`,
-                                    }}
-                                >
-                                    {line}
-                                </p>
-                            ))}
+                            {systemExperience.map((line, index) => {
+                                const visibility = getLineVisibility(index, systemProgress);
+                                return (
+                                    <p
+                                        key={index}
+                                        className={`${styles.line} ${styles[line.emphasis]} ${styles.systemLine}`}
+                                        style={{
+                                            opacity: visibility * 0.85, // Niższy kontrast dla systemu
+                                            transform: `translateY(${(1 - visibility) * 8}px)`,
+                                        }}
+                                    >
+                                        {line.text}
+                                    </p>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
