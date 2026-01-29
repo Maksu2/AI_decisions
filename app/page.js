@@ -35,7 +35,7 @@ export default function Home() {
       <ReflectionSection />
 
       <TransitionSection
-        text="Nie ma prostych odpowiedzi na złożone pytania."
+        text="Nie ma prostych odpowiedzi."
         variant="dim"
       />
 

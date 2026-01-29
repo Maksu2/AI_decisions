@@ -4,64 +4,53 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./NarrativeSection.module.css";
 
 /**
- * Rozbudowana sekwencja narracyjna — przykłady decyzji AI.
- * 
- * Każdy element ma przypisaną "wagę" wpływającą na to,
- * ile czasu scrollowania zajmuje. Dzięki temu pytania 
- * i refleksje trwają dłużej, a przykłady przechodzą szybciej.
+ * Sekwencja narracyjna — zróżnicowane tempo scrollowania.
+ * Pytania i refleksje dłużej na ekranie, przykłady szybciej.
  */
 const narrativeSequence = [
-    // Sekcja 1: Wprowadzenie — wolne tempo
+    // Wprowadzenie
     {
         id: "intro",
         type: "intro",
-        weight: 1.5, // Dłuższe
-        label: null,
+        weight: 1.6,
         title: "Każdego dnia algorytmy podejmują miliony decyzji.",
-        description: null,
     },
     {
         id: "intro-2",
         type: "thought",
-        weight: 1.3,
-        label: null,
-        title: "Większości z nich nawet nie zauważasz.",
-        description: null,
+        weight: 1.4,
+        title: "Większości z nich nie zauważasz.",
     },
 
-    // Sekcja 2: Przykłady — zróżnicowane tempo
+    // Przykłady
     {
         id: "medical",
         type: "example",
-        weight: 1.0, // Standardowe
+        weight: 1.0,
         label: "Medycyna",
         title: "AI analizuje prześwietlenie.",
-        description: "W niektórych szpitalach algorytm wykrywa nowotwory szybciej niż radiolog.",
+        description: "Algorytm wykrywa nowotwory szybciej niż radiolog.",
     },
     {
         id: "medical-reflection",
         type: "question",
-        weight: 1.4, // Dłuższe — pytanie wymaga zastanowienia
-        label: null,
-        title: "Ale czy maszyna rozumie strach pacjenta?",
-        description: null,
+        weight: 1.5,
+        title: "Czy maszyna rozumie strach pacjenta?",
     },
 
     {
         id: "finance",
         type: "example",
-        weight: 0.9, // Nieco szybsze
+        weight: 0.9,
         label: "Finanse",
         title: "Algorytm ocenia Twoją zdolność kredytową.",
-        description: "Banki używają AI do przewidywania ryzyka.",
+        description: "Banki przewidują ryzyko na podstawie danych.",
     },
     {
         id: "finance-reflection",
         type: "thought",
-        weight: 1.2,
-        label: null,
-        title: "Model nie widzi Twojej historii — widzi statystyki.",
-        description: null,
+        weight: 1.3,
+        title: "Model widzi statystyki — nie historię.",
     },
 
     {
@@ -69,69 +58,57 @@ const narrativeSequence = [
         type: "example",
         weight: 1.0,
         label: "Transport",
-        title: "Samochód autonomiczny podejmuje decyzję w ułamku sekundy.",
-        description: "W sytuacji zagrożenia AI musi wybrać.",
+        title: "Autonomiczny samochód decyduje w ułamku sekundy.",
+        description: "W sytuacji zagrożenia musi wybrać.",
     },
     {
         id: "transport-reflection",
         type: "question",
-        weight: 1.5, // Ważne pytanie — więcej czasu
-        label: null,
-        title: "Kto ponosi odpowiedzialność za jej wybór?",
-        description: null,
+        weight: 1.6,
+        title: "Kto odpowiada za decyzję maszyny?",
     },
 
     {
         id: "justice",
         type: "example",
         weight: 1.0,
-        label: "Wymiar sprawiedliwości",
+        label: "Sprawiedliwość",
         title: "System sugeruje wyrok.",
-        description: "W USA algorytmy oceniają ryzyko recydywy.",
+        description: "Algorytmy oceniają ryzyko recydywy.",
     },
     {
         id: "justice-reflection",
         type: "question",
-        weight: 1.4,
-        label: null,
-        title: "Czy dane historyczne mogą być sprawiedliwe?",
-        description: null,
+        weight: 1.5,
+        title: "Czy przeszłość może być sprawiedliwa?",
     },
 
     {
         id: "work",
         type: "example",
-        weight: 1.1,
+        weight: 1.0,
         label: "Rekrutacja",
         title: "AI przegląda Twoje CV.",
-        description: "Zanim człowiek zobaczy Twoje zgłoszenie, algorytm już podjął wstępną decyzję.",
+        description: "Algorytm decyduje, zanim człowiek je zobaczy.",
     },
 
-    // Sekcja 3: Podsumowanie — bardzo wolne tempo dla wybrzmienia
+    // Kulminacja
     {
         id: "summary",
         type: "conclusion",
-        weight: 1.6,
-        label: null,
-        title: "To nie jest przyszłość.",
-        description: null,
+        weight: 1.8,
+        title: "To nie przyszłość.",
     },
     {
         id: "summary-2",
         type: "conclusion-accent",
-        weight: 2.0, // Najdłuższe — kulminacja
-        label: null,
-        title: "To dzieje się teraz.",
-        description: null,
+        weight: 2.2,
+        title: "To teraźniejszość.",
     },
 ];
 
-// Oblicz całkowitą wagę dla normalizacji
 const totalWeight = narrativeSequence.reduce((sum, item) => sum + item.weight, 0);
 
-/**
- * NarrativeSection — Sticky sekcja narracyjna z ważonym rytmem.
- */
 export default function NarrativeSection() {
     const containerRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -150,7 +127,6 @@ export default function NarrativeSection() {
             const scrollableHeight = containerHeight - viewportHeight;
             const totalProgress = Math.min(1, Math.max(0, scrolled / scrollableHeight));
 
-            // Znajdź aktywny element na podstawie wag
             let accumulatedWeight = 0;
             let currentIndex = 0;
             let progressWithinItem = 0;
@@ -181,18 +157,18 @@ export default function NarrativeSection() {
 
     const currentItem = narrativeSequence[activeIndex];
 
-    // Opacity: fade in/out na krawędziach
+    // Fade in/out
     let opacity = 1;
-    if (itemProgress < 0.12) {
-        opacity = itemProgress / 0.12;
-    } else if (itemProgress > 0.88) {
-        opacity = (1 - itemProgress) / 0.12;
+    if (itemProgress < 0.1) {
+        opacity = itemProgress / 0.1;
+    } else if (itemProgress > 0.9) {
+        opacity = (1 - itemProgress) / 0.1;
     }
 
     // Subtelny scale
-    const scale = 0.97 + itemProgress * 0.06;
+    const scale = 0.98 + itemProgress * 0.04;
 
-    // Oblicz całkowity postęp dla paska
+    // Progress bar
     let totalProgressForBar = 0;
     for (let i = 0; i < activeIndex; i++) {
         totalProgressForBar += narrativeSequence[i].weight / totalWeight;
@@ -203,7 +179,7 @@ export default function NarrativeSection() {
         <section ref={containerRef} className={styles.container}>
             <div className={styles.sticky}>
                 <div className={styles.content}>
-                    <p className={styles.sectionLabel}>Gdzie dziś decyduje AI?</p>
+                    <p className={styles.sectionLabel}>Gdzie decyduje AI?</p>
 
                     <div
                         className={styles.narrative}
@@ -212,7 +188,7 @@ export default function NarrativeSection() {
                             transform: `scale(${scale})`,
                         }}
                     >
-                        <article className={`${styles.item} ${styles[currentItem.type]}`}>
+                        <article className={`${styles.item} ${styles[currentItem.type] || ""}`}>
                             {currentItem.label && (
                                 <span className={styles.category}>{currentItem.label}</span>
                             )}

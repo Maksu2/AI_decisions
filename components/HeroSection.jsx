@@ -4,12 +4,9 @@ import { useEffect, useState, useRef } from "react";
 import styles from "./HeroSection.module.css";
 
 /**
- * Sekcja Hero — pełnoekranowa sekcja otwierająca z głównym pytaniem.
+ * HeroSection — Pełnoekranowa sekcja otwierająca.
  * 
- * Efekty:
- * - Tekst pojawia się z animacją fade-in po załadowaniu
- * - Przy scrollowaniu: parallax (opacity + scale) dla immersyjnego wrażenia
- * - Subtelna strzałka zachęcająca do przewinięcia
+ * Subtelny parallax i animacja wejścia.
  */
 export default function HeroSection() {
     const [scrollY, setScrollY] = useState(0);
@@ -17,7 +14,6 @@ export default function HeroSection() {
     const sectionRef = useRef(null);
 
     useEffect(() => {
-        // Animacja wejścia po załadowaniu
         const timer = setTimeout(() => setIsLoaded(true), 100);
         return () => clearTimeout(timer);
     }, []);
@@ -26,7 +22,6 @@ export default function HeroSection() {
         const handleScroll = () => {
             if (sectionRef.current) {
                 const rect = sectionRef.current.getBoundingClientRect();
-                // Tylko gdy sekcja jest widoczna
                 if (rect.bottom > 0) {
                     setScrollY(window.scrollY);
                 }
@@ -37,9 +32,8 @@ export default function HeroSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Parallax: opacity maleje, skala rośnie przy scrollowaniu
-    const opacity = Math.max(0, 1 - scrollY / 600);
-    const scale = 1 + scrollY * 0.0003;
+    const opacity = Math.max(0, 1 - scrollY / 500);
+    const scale = 1 + scrollY * 0.0002;
 
     return (
         <section ref={sectionRef} className={styles.hero}>
@@ -56,11 +50,10 @@ export default function HeroSection() {
                     <span className={styles.highlight}>powinna decydować za nas?</span>
                 </h1>
                 <p className={styles.subtitle}>
-                    Przewiń, aby odkryć różne perspektywy
+                    Przewiń, aby poznać różne perspektywy
                 </p>
             </div>
 
-            {/* Strzałka zachęcająca do scrollowania */}
             <div className={styles.scrollIndicator} style={{ opacity }}>
                 <div className={styles.arrow} />
             </div>

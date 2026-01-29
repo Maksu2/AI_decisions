@@ -4,23 +4,23 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./ProConSection.module.css";
 
 /**
- * Argumenty za i przeciw — teraz z dynamicznym scroll reveal.
+ * Argumenty — zwięzłe i neutralne.
  */
 const proArguments = [
     {
         id: "speed",
         title: "Szybkość",
-        description: "AI przetwarza dane w ułamku sekundy, gdy liczy się każda chwila.",
+        description: "Przetwarza dane w ułamku sekundy.",
     },
     {
         id: "consistency",
         title: "Konsekwencja",
-        description: "Algorytm nie ma złych dni — jego decyzje są przewidywalne.",
+        description: "Nie ma złych dni — decyzje są przewidywalne.",
     },
     {
         id: "scale",
         title: "Skala",
-        description: "Jeden system może obsłużyć miliony przypadków jednocześnie.",
+        description: "Może obsłużyć miliony przypadków naraz.",
     },
 ];
 
@@ -28,28 +28,20 @@ const conArguments = [
     {
         id: "context",
         title: "Brak kontekstu",
-        description: "AI nie rozumie niuansów życia, które człowiek widzi intuicyjnie.",
+        description: "Nie rozumie niuansów, które widzi człowiek.",
     },
     {
         id: "accountability",
         title: "Odpowiedzialność",
-        description: "Gdy algorytm się myli, kto ponosi konsekwencje?",
+        description: "Gdy się myli — kto ponosi konsekwencje?",
     },
     {
         id: "bias",
         title: "Uprzedzenia",
-        description: "AI uczy się z danych — także z błędów i stereotypów przeszłości.",
+        description: "Uczy się z danych, także z błędów przeszłości.",
     },
 ];
 
-/**
- * ProConSection — Scroll-driven reveal argumentów.
- * 
- * Mechanizm:
- * - Sticky header z tytułem
- * - Karty pojawiają się jedna po drugiej podczas scrollowania
- * - Kolumny przesuwają się względem siebie dla efektu dialogu
- */
 export default function ProConSection() {
     const containerRef = useRef(null);
     const [progress, setProgress] = useState(0);
@@ -76,37 +68,26 @@ export default function ProConSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Ile kart jest widocznych (0-6)
     const totalCards = proArguments.length + conArguments.length;
-    const visibleCards = Math.floor(progress * (totalCards + 2)); // +2 dla nagłówka
-
-    // Przesunięcie kolumn względem siebie
-    const columnOffset = Math.sin(progress * Math.PI) * 20;
-
-    // Czy nagłówek jest widoczny
-    const headerVisible = progress > 0.02;
-    const headerOpacity = Math.min(1, progress * 10);
+    const visibleCards = Math.floor(progress * (totalCards + 2));
+    const columnOffset = Math.sin(progress * Math.PI) * 16;
+    const headerOpacity = Math.min(1, progress * 8);
 
     return (
         <section ref={containerRef} className={styles.container}>
             <div className={styles.sticky}>
-                {/* Nagłówek */}
                 <header
                     className={styles.header}
                     style={{
                         opacity: headerOpacity,
-                        transform: `translateY(${headerVisible ? 0 : 30}px)`,
+                        transform: `translateY(${progress > 0.02 ? 0 : 24}px)`,
                     }}
                 >
                     <h2 className={styles.title}>Dwie strony medalu</h2>
-                    <p className={styles.subtitle}>
-                        Każda technologia niesie ze sobą szanse i zagrożenia
-                    </p>
+                    <p className={styles.subtitle}>Szanse i zagrożenia</p>
                 </header>
 
-                {/* Grid z kolumnami */}
                 <div className={styles.grid}>
-                    {/* Kolumna PRO */}
                     <div
                         className={styles.column}
                         style={{ transform: `translateY(${-columnOffset}px)` }}
@@ -115,7 +96,7 @@ export default function ProConSection() {
                             className={styles.columnLabel}
                             style={{ opacity: visibleCards >= 1 ? 1 : 0 }}
                         >
-                            Za przekazaniem decyzji AI
+                            Za
                         </span>
                         <div className={styles.cards}>
                             {proArguments.map((arg, index) => {
@@ -131,7 +112,7 @@ export default function ProConSection() {
                                         className={styles.card}
                                         style={{
                                             opacity: isVisible ? cardProgress : 0,
-                                            transform: `translateY(${isVisible ? 0 : 40}px) scale(${0.95 + cardProgress * 0.05})`,
+                                            transform: `translateY(${isVisible ? 0 : 32}px)`,
                                         }}
                                     >
                                         <h3 className={styles.cardTitle}>{arg.title}</h3>
@@ -142,7 +123,6 @@ export default function ProConSection() {
                         </div>
                     </div>
 
-                    {/* Separator */}
                     <div className={styles.separator}>
                         <div
                             className={styles.line}
@@ -153,7 +133,6 @@ export default function ProConSection() {
                         />
                     </div>
 
-                    {/* Kolumna CON */}
                     <div
                         className={styles.column}
                         style={{ transform: `translateY(${columnOffset}px)` }}
@@ -178,7 +157,7 @@ export default function ProConSection() {
                                         className={`${styles.card} ${styles.cardCon}`}
                                         style={{
                                             opacity: isVisible ? cardProgress : 0,
-                                            transform: `translateY(${isVisible ? 0 : 40}px) scale(${0.95 + cardProgress * 0.05})`,
+                                            transform: `translateY(${isVisible ? 0 : 32}px)`,
                                         }}
                                     >
                                         <h3 className={styles.cardTitle}>{arg.title}</h3>
