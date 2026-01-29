@@ -4,11 +4,12 @@ import { useMotion } from "@/contexts/MotionContext";
 import styles from "./MotionToggle.module.css";
 
 /**
- * MotionToggle — Dyskretny przełącznik reduced motion.
+ * MotionToggle — Przełącznik reduced motion z jasnym komunikatem stanu.
  * 
- * - Subtelny, estetycznie spójny z resztą strony
- * - Pozycjonowany w rogu, nie dominuje wizualnie
- * - Pokazuje aktualny stan i źródło (system/manual)
+ * Wymagania:
+ * - Jasny tekst komunikujący stan
+ * - Wyraźna zmiana przy włączeniu
+ * - Spójny estetycznie z resztą strony
  */
 export default function MotionToggle() {
     const { reducedMotion, setReducedMotion, isSystemPreference } = useMotion();
@@ -23,37 +24,30 @@ export default function MotionToggle() {
             onClick={handleToggle}
             aria-pressed={reducedMotion}
             aria-label={reducedMotion ? "Włącz animacje" : "Wyłącz animacje"}
-            title={reducedMotion ? "Animacje wyłączone" : "Animacje włączone"}
         >
-            <svg
-                className={styles.icon}
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            >
+            {/* Ikona */}
+            <span className={styles.icon} aria-hidden="true">
                 {reducedMotion ? (
-                    /* Ikona pause — animacje wyłączone */
-                    <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <rect x="6" y="4" width="4" height="16" rx="1" />
                         <rect x="14" y="4" width="4" height="16" rx="1" />
-                    </>
+                    </svg>
                 ) : (
-                    /* Ikona motion — animacje włączone */
-                    <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M5 12h14" />
                         <path d="M12 5l7 7-7 7" />
-                    </>
+                    </svg>
                 )}
-            </svg>
+            </span>
+
+            {/* Tekst stanu */}
+            <span className={styles.label}>
+                {reducedMotion ? "Animacje: wyłączone" : "Animacje: włączone"}
+            </span>
+
+            {/* Wskaźnik systemowego ustawienia */}
             {isSystemPreference && (
-                <span className={styles.systemIndicator} aria-hidden="true">
-                    •
-                </span>
+                <span className={styles.systemBadge}>auto</span>
             )}
         </button>
     );
