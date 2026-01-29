@@ -1,0 +1,61 @@
+/*
+ * TransitionSection — Style
+ * "Oddychające" sekcje przejściowe z pojedynczym zdaniem.
+ */
+
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl) var(--spacing-lg);
+    position: relative;
+}
+
+.content {
+    max-width: 900px;
+    text-align: center;
+    will-change: opacity, transform;
+}
+
+.text {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+}
+
+.subtext {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-md);
+}
+
+/* Warianty kolorystyczne */
+.default .text {
+    color: var(--color-text);
+}
+
+.accent .text {
+    background: linear-gradient(135deg,
+            var(--color-text) 0%,
+            var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.dim .text {
+    color: var(--color-text-muted);
+}
+
+.dim .subtext {
+    color: var(--color-text-subtle);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .section {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+}

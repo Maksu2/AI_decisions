@@ -1,0 +1,149 @@
+/*
+ * NarrativeSection — Style
+ * Rozbudowana sticky sekcja z wieloma momentami narracyjnymi.
+ */
+
+.container {
+    /* Bardzo długa sekcja dla wolnego tempa scrollowania */
+    /* 13 elementów × ~120vh na element = ~1560vh */
+    min-height: 1400vh;
+    position: relative;
+}
+
+.sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+}
+
+.content {
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sectionLabel {
+    font-size: var(--text-small);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.8;
+}
+
+/* Kontener na aktywny moment */
+.narrative {
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: opacity, transform;
+    transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+}
+
+/* Pojedynczy element narracji */
+.item {
+    width: 100%;
+}
+
+.category {
+    display: inline-block;
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    background: var(--color-bg-elevated);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 100px;
+    margin-bottom: var(--spacing-md);
+}
+
+.title {
+    font-size: var(--text-section);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--spacing-md);
+}
+
+.description {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Typy elementów — różne style */
+.intro .title,
+.thought .title {
+    color: var(--color-text-muted);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+}
+
+.question .title {
+    font-style: italic;
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+.conclusion .title {
+    color: var(--color-text-muted);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+.conclusion-accent .title {
+    background: linear-gradient(135deg,
+            var(--color-text) 0%,
+            var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: var(--text-section);
+}
+
+/* Pasek postępu */
+.progressBar {
+    width: 200px;
+    height: 2px;
+    background: var(--color-text-subtle);
+    border-radius: 1px;
+    margin-top: var(--spacing-xl);
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 1px;
+    transition: width 0.1s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        min-height: 1200vh;
+    }
+
+    .sticky {
+        padding: var(--spacing-md);
+    }
+
+    .narrative {
+        min-height: 320px;
+    }
+
+    .title {
+        font-size: clamp(1.5rem, 6vw, 2.5rem);
+    }
+
+    .progressBar {
+        width: 150px;
+    }
+}

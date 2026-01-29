@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🤖 Czy AI powinna decydować za ludzi?
 
-## Getting Started
+Nowoczesna, minimalistyczna strona internetowa w estetyce Apple, eksplorująca refleksyjne pytanie o rolę sztucznej inteligencji w podejmowaniu decyzji.
 
-First, run the development server:
+**[🌐 Zobacz demo na Vercel](https://ai-decisions.vercel.app)** *(po deploymencie)*
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 📖 O projekcie
+
+Strona ma formę **scroll storytelling** — spokojnej, przewijanej narracji prowadzącej użytkownika przez kolejne etapy rozumowania. Zamiast klasycznego artykułu, stawia na:
+
+- 🎯 **Klarowność przekazu** — jedno zdanie na ekran
+- 🌬️ **Ciszę wizualną** — duża ilość pustej przestrzeni
+- ✨ **Animacje wzmacniające sens** — fade, scale, parallax przy scrollu
+- ⚖️ **Wyważony ton** — bez narzucania jednoznacznej odpowiedzi
+
+## 🎨 Estetyka
+
+Inspiracja: strony produktowe Apple.
+
+- Ciemne tło (`#0a0a0a`) z wysokim kontrastem
+- Font: Geist (Vercel) — nowoczesny, czytelny
+- Akcent: niebieski (`#3b82f6`) stosowany oszczędnie
+- Animacje scroll-driven na każdej sekcji
+
+## 🏗️ Struktura
+
+```
+├── app/
+│   ├── layout.js          # Root layout, SEO metadata
+│   ├── page.js             # Kompozycja wszystkich sekcji
+│   └── globals.css         # Design system, zmienne CSS
+├── components/
+│   ├── HeroSection.jsx     # Pełnoekranowe pytanie otwierające
+│   ├── NarrativeSection.jsx# Sticky scroll z 13 momentami narracji
+│   ├── TransitionSection.jsx# "Oddychające" sekcje przejściowe
+│   ├── ProConSection.jsx   # Scroll-driven reveal argumentów
+│   ├── ReflectionSection.jsx# Interaktywny element refleksyjny
+│   └── ClosingSection.jsx  # Podsumowanie z efektami fade
+└── hooks/
+    └── useScrollReveal.js  # Custom hooks do animacji scroll
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Uruchomienie lokalne
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+# Instalacja zależności
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Tryb deweloperski
+npm run dev
 
-## Learn More
+# Build produkcyjny
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+Otwórz [http://localhost:3000](http://localhost:3000) w przeglądarce.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📦 Deploy na Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Połącz repo z [Vercel](https://vercel.com)
+2. Vercel automatycznie wykryje Next.js
+3. Kliknij "Deploy"
 
-## Deploy on Vercel
+Lub przez CLI:
+```bash
+npx vercel
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Technologie
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js 16** (App Router)
+- **React 19**
+- **CSS Modules** (bez Tailwind)
+- **Intersection Observer API** dla animacji scroll
+
+## 📝 Licencja
+
+Projekt szkolny • 2026
+
+---
+
+*Stworzono z myślą o refleksji, nie o odpowiedziach.*

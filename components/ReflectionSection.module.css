@@ -1,0 +1,198 @@
+/*
+ * ReflectionSection — Style
+ * Kulminacyjny element interaktywny z wzmocnionym wejściem.
+ */
+
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl) var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Gradient tła dla kulminacji */
+.background {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 50% at 50% 50%,
+            rgba(59, 130, 246, 0.08) 0%,
+            transparent 70%);
+    pointer-events: none;
+    will-change: opacity;
+}
+
+.content {
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    will-change: opacity, transform;
+}
+
+/* Pytanie */
+.question {
+    animation: fadeInUp 0.8s var(--ease-out-expo) both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.preTitle {
+    display: block;
+    font-size: var(--text-small);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--spacing-md);
+}
+
+.title {
+    font-size: var(--text-section);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--spacing-sm);
+}
+
+.subtitle {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Opcje wyboru */
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+.option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    background: var(--color-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out-expo),
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+    min-width: 160px;
+}
+
+.option:hover {
+    transform: translateY(-8px);
+    border-color: var(--color-accent);
+    background: rgba(59, 130, 246, 0.08);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+}
+
+.option:active {
+    transform: translateY(-4px);
+}
+
+.optionIcon {
+    font-size: 2.5rem;
+}
+
+.optionLabel {
+    font-size: var(--text-body);
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.optionSmall {
+    padding: var(--spacing-md) var(--spacing-lg);
+    flex-direction: row;
+    min-width: auto;
+}
+
+.optionSmall .optionLabel {
+    color: var(--color-text-muted);
+}
+
+/* Odpowiedź */
+.response {
+    animation: fadeIn 0.8s var(--ease-out-expo);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.responseTitle {
+    font-size: var(--text-heading);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    background: linear-gradient(135deg,
+            var(--color-text) 0%,
+            var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.responseText {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-lg);
+}
+
+.reset {
+    font-size: var(--text-small);
+    color: var(--color-text-subtle);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 0.3s ease;
+}
+
+.reset:hover {
+    color: var(--color-text-muted);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .section {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .option {
+        width: 100%;
+        max-width: 280px;
+    }
+}

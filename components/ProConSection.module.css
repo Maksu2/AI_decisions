@@ -1,0 +1,153 @@
+/*
+ * ProConSection — Style
+ * Scroll-driven reveal argumentów za i przeciw.
+ */
+
+.container {
+    /* Wysokość dla scroll-driven animations */
+    min-height: 400vh;
+    position: relative;
+}
+
+.sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+    gap: var(--spacing-lg);
+}
+
+.header {
+    text-align: center;
+    will-change: opacity, transform;
+    transition: transform 0.5s var(--ease-out-expo);
+}
+
+.title {
+    font-size: var(--text-section);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--spacing-sm);
+}
+
+.subtitle {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+}
+
+/* Grid z kolumnami */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: var(--spacing-lg);
+    max-width: 1100px;
+    width: 100%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+    transition: transform 0.3s var(--ease-out-expo);
+}
+
+.columnLabel {
+    font-size: var(--text-small);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+    transition: opacity 0.5s var(--ease-out-expo);
+}
+
+.labelCon {
+    color: var(--color-text-muted);
+}
+
+/* Karty z argumentami */
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.card {
+    background: var(--color-bg-elevated);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: var(--spacing-md);
+    will-change: opacity, transform;
+    transition: opacity 0.4s var(--ease-out-expo),
+        transform 0.4s var(--ease-out-expo),
+        border-color 0.3s ease;
+}
+
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.cardCon {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.cardTitle {
+    font-size: var(--text-heading);
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.cardDesc {
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+/* Separator między kolumnami */
+.separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--spacing-sm);
+    min-height: 300px;
+}
+
+.line {
+    width: 1px;
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            var(--color-accent) 50%,
+            transparent 100%);
+    transition: height 0.3s ease-out, opacity 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .container {
+        min-height: 500vh;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+    }
+
+    .separator {
+        display: none;
+    }
+
+    .column:last-child {
+        border-top: 1px solid var(--color-text-subtle);
+        padding-top: var(--spacing-xl);
+    }
+}
+
+@media (max-width: 768px) {
+    .sticky {
+        padding: var(--spacing-md);
+    }
+}
