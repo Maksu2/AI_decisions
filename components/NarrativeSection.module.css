@@ -1,24 +1,17 @@
 /*
  * NarrativeSection — Style
- * Rozbudowana sticky sekcja z wieloma momentami narracyjnymi.
- * v2.0 — Zróżnicowany rytm, dopracowana typografia
+ * Scroll-driven sticky z narracją.
  */
 
 .container {
-    /* Zróżnicowana długość sekcji dla zmiennego rytmu:
-   * - intro/thought: wolniejsze (dłuższy scroll)
-   * - examples: standardowe tempo
-   * - questions: krótkie pauzy
-   * - conclusion: dramatyczne spowolnienie
-   * Łącznie ~1600vh dla 13 elementów */
-    min-height: 1600vh;
+    min-height: 1800vh;
     position: relative;
 }
 
 .sticky {
     position: sticky;
     top: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,39 +19,31 @@
 }
 
 .content {
-    max-width: 900px;
+    max-width: 800px;
     width: 100%;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
 }
 
 .sectionLabel {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: var(--text-small);
     font-weight: var(--weight-medium);
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
-    margin-bottom: var(--spacing-lg);
     opacity: 0.7;
 }
 
-/* Kontener na aktywny moment */
 .narrative {
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    will-change: opacity, transform;
-    /* Płynniejsze przejścia */
-    transition: opacity 0.2s var(--ease-out-quint),
-        transform 0.2s var(--ease-out-quint);
+    transition: opacity 0.3s var(--ease-out-expo);
 }
 
-/* Pojedynczy element narracji */
 .item {
-    width: 100%;
+    padding: var(--spacing-md) 0;
 }
 
 .category {
@@ -70,47 +55,37 @@
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: 100px;
     margin-bottom: var(--spacing-md);
-    letter-spacing: 0.02em;
 }
 
 .title {
     font-size: var(--text-section);
     font-weight: var(--weight-semibold);
-    line-height: 1.15;
+    line-height: 1.2;
     letter-spacing: var(--tracking-tight);
-    margin-bottom: var(--spacing-md);
 }
 
-.description {
-    font-size: var(--text-body);
-    font-weight: var(--weight-normal);
-    color: var(--color-text-muted);
-    max-width: 580px;
-    margin: 0 auto;
-    line-height: 1.75;
-    letter-spacing: var(--tracking-normal);
-}
-
-/* Typy elementów — zróżnicowana hierarchia */
+/* Typy */
 .intro .title,
 .thought .title {
     color: var(--color-text-muted);
     font-weight: var(--weight-normal);
-    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-    letter-spacing: var(--tracking-normal);
+    font-size: clamp(1.5rem, 4vw, 2.8rem);
 }
 
-.question .title {
+.example .title {
+    color: var(--color-text);
+}
+
+.consequence .title {
+    color: var(--color-text-muted);
+    font-weight: var(--weight-normal);
+    font-size: clamp(1.2rem, 3vw, 2rem);
     font-style: italic;
-    color: var(--color-accent);
-    font-weight: var(--weight-medium);
-    font-size: clamp(1.5rem, 4vw, 2.8rem);
 }
 
 .conclusion .title {
     color: var(--color-text-muted);
-    font-weight: var(--weight-normal);
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
 }
 
 .conclusion-accent .title {
@@ -120,57 +95,40 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: var(--text-section);
-    font-weight: var(--weight-semibold);
+    font-size: clamp(2rem, 6vw, 4rem);
 }
 
-/* Pasek postępu — subtelniejszy */
+/* Progress bar */
 .progressBar {
-    width: 180px;
-    height: 1px;
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 0.5px;
-    margin-top: var(--spacing-xl);
+    border-radius: 1px;
     overflow: hidden;
 }
 
 .progressFill {
     height: 100%;
     background: var(--color-accent);
-    border-radius: 0.5px;
-    transition: width 0.15s var(--ease-out-quint);
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    .narrative {
-        transition: none;
-    }
-
-    .progressFill {
-        transition: none;
-    }
+    border-radius: 1px;
+    transition: width 0.1s linear;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .container {
-        min-height: 1400vh;
+        min-height: 2000vh;
     }
 
     .sticky {
         padding: var(--spacing-md);
     }
 
-    .narrative {
-        min-height: 340px;
-    }
-
     .title {
-        font-size: clamp(1.5rem, 7vw, 2.5rem);
-    }
-
-    .progressBar {
-        width: 120px;
+        font-size: clamp(1.3rem, 6vw, 2rem);
     }
 }

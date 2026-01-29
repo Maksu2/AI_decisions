@@ -4,106 +4,113 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./NarrativeSection.module.css";
 
 /**
- * Sekwencja narracyjna — zróżnicowane tempo scrollowania.
- * Pytania i refleksje dłużej na ekranie, przykłady szybciej.
+ * Sekwencja narracyjna — fakty i ich konsekwencje.
+ * 
+ * Każda scena prowadzi do jednozdaniowego zderzenia faktu z konsekwencją.
+ * Mniej pytań, więcej napięć.
  */
 const narrativeSequence = [
     // Wprowadzenie
     {
         id: "intro",
         type: "intro",
-        weight: 1.6,
+        weight: 1.8,
         title: "Każdego dnia algorytmy podejmują miliony decyzji.",
     },
     {
         id: "intro-2",
         type: "thought",
-        weight: 1.4,
+        weight: 1.5,
         title: "Większości z nich nie zauważasz.",
     },
 
-    // Przykłady
+    // Medycyna — fakt + konsekwencja
     {
         id: "medical",
         type: "example",
         weight: 1.0,
         label: "Medycyna",
-        title: "AI analizuje prześwietlenie.",
-        description: "Algorytm wykrywa nowotwory szybciej niż radiolog.",
+        title: "Algorytm analizuje prześwietlenie.",
     },
     {
-        id: "medical-reflection",
-        type: "question",
-        weight: 1.5,
-        title: "Czy maszyna rozumie strach pacjenta?",
+        id: "medical-consequence",
+        type: "consequence",
+        weight: 1.4,
+        title: "Wykrywa nowotwór szybciej niż lekarz — ale nie powie pacjentowi, że będzie dobrze.",
     },
 
+    // Finanse
     {
         id: "finance",
         type: "example",
         weight: 0.9,
         label: "Finanse",
-        title: "Algorytm ocenia Twoją zdolność kredytową.",
-        description: "Banki przewidują ryzyko na podstawie danych.",
+        title: "System ocenia Twoją zdolność kredytową.",
     },
     {
-        id: "finance-reflection",
-        type: "thought",
+        id: "finance-consequence",
+        type: "consequence",
         weight: 1.3,
-        title: "Model widzi statystyki — nie historię.",
+        title: "Widzi historię spłat, nie widzi, że właśnie znalazłeś pracę.",
     },
 
+    // Transport
     {
         id: "transport",
         type: "example",
         weight: 1.0,
         label: "Transport",
-        title: "Autonomiczny samochód decyduje w ułamku sekundy.",
-        description: "W sytuacji zagrożenia musi wybrać.",
+        title: "Autonomiczny samochód podejmuje decyzję w ułamku sekundy.",
     },
     {
-        id: "transport-reflection",
-        type: "question",
-        weight: 1.6,
-        title: "Kto odpowiada za decyzję maszyny?",
+        id: "transport-consequence",
+        type: "consequence",
+        weight: 1.5,
+        title: "Wybiera, kogo chronić. Nikt nie wie, według jakich zasad.",
     },
 
+    // Sprawiedliwość
     {
         id: "justice",
         type: "example",
         weight: 1.0,
         label: "Sprawiedliwość",
-        title: "System sugeruje wyrok.",
-        description: "Algorytmy oceniają ryzyko recydywy.",
+        title: "Algorytm sugeruje wyrok.",
     },
     {
-        id: "justice-reflection",
-        type: "question",
-        weight: 1.5,
-        title: "Czy przeszłość może być sprawiedliwa?",
+        id: "justice-consequence",
+        type: "consequence",
+        weight: 1.4,
+        title: "Uczy się z przeszłości — także z jej niesprawiedliwości.",
     },
 
+    // Rekrutacja
     {
         id: "work",
         type: "example",
         weight: 1.0,
         label: "Rekrutacja",
         title: "AI przegląda Twoje CV.",
-        description: "Algorytm decyduje, zanim człowiek je zobaczy.",
+    },
+    {
+        id: "work-consequence",
+        type: "consequence",
+        weight: 1.3,
+        title: "Zanim człowiek je zobaczy, algorytm już zdecydował.",
     },
 
     // Kulminacja
     {
         id: "summary",
         type: "conclusion",
-        weight: 1.8,
-        title: "To nie przyszłość.",
+        weight: 2.0,
+        title: "To nie jest przyszłość.",
     },
     {
         id: "summary-2",
         type: "conclusion-accent",
-        weight: 2.2,
-        title: "To teraźniejszość.",
+        weight: 2.5,
+        title: "To jest teraz.",
     },
 ];
 
@@ -157,16 +164,13 @@ export default function NarrativeSection() {
 
     const currentItem = narrativeSequence[activeIndex];
 
-    // Fade in/out
+    // Fade
     let opacity = 1;
     if (itemProgress < 0.1) {
         opacity = itemProgress / 0.1;
     } else if (itemProgress > 0.9) {
         opacity = (1 - itemProgress) / 0.1;
     }
-
-    // Subtelny scale
-    const scale = 0.98 + itemProgress * 0.04;
 
     // Progress bar
     let totalProgressForBar = 0;
@@ -183,19 +187,13 @@ export default function NarrativeSection() {
 
                     <div
                         className={styles.narrative}
-                        style={{
-                            opacity,
-                            transform: `scale(${scale})`,
-                        }}
+                        style={{ opacity }}
                     >
                         <article className={`${styles.item} ${styles[currentItem.type] || ""}`}>
                             {currentItem.label && (
                                 <span className={styles.category}>{currentItem.label}</span>
                             )}
                             <h2 className={styles.title}>{currentItem.title}</h2>
-                            {currentItem.description && (
-                                <p className={styles.description}>{currentItem.description}</p>
-                            )}
                         </article>
                     </div>
 

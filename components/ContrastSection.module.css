@@ -1,0 +1,85 @@
+/*
+ * ContrastSection — Style
+ * Zderzenie dwóch perspektyw decyzji.
+ */
+
+.container {
+    min-height: 500vh;
+    position: relative;
+}
+
+.sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+}
+
+.content {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.perspective {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    transition: opacity 0.6s var(--ease-out-expo);
+}
+
+.header {
+    font-size: var(--text-section);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--spacing-xl);
+    transition: opacity 0.4s var(--ease-out-expo);
+}
+
+.human .header {
+    color: var(--color-text);
+}
+
+.system .header {
+    color: var(--color-accent);
+}
+
+.lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.line {
+    font-size: var(--text-heading);
+    font-weight: var(--weight-normal);
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    transition: opacity 0.5s var(--ease-out-expo),
+        transform 0.5s var(--ease-out-expo);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        min-height: 600vh;
+    }
+
+    .sticky {
+        padding: var(--spacing-md);
+    }
+
+    .header {
+        font-size: clamp(1.5rem, 6vw, 2.5rem);
+    }
+
+    .line {
+        font-size: var(--text-body);
+    }
+}

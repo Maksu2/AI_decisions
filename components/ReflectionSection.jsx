@@ -1,65 +1,55 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import styles from "./ReflectionSection.module.css";
 
-const HumanIcon = () => (
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="7" r="4" />
-        <path d="M5.5 21a8.5 8.5 0 0 1 13 0" />
-    </svg>
-);
-
-const AIIcon = () => (
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="4" width="18" height="16" rx="2" />
-        <circle cx="9" cy="10" r="1.5" fill="currentColor" />
-        <circle cx="15" cy="10" r="1.5" fill="currentColor" />
-        <path d="M9 15h6" />
-        <path d="M12 2v2" />
-    </svg>
-);
-
 /**
- * Odpowiedzi — zwięzłe, neutralne, refleksyjne.
+ * ReflectionSection — Nieinteraktywna sekwencja refleksji.
+ * 
+ * Użytkownik nie klika, nie wybiera, nie deklaruje.
+ * Jest prowadzony przez sekwencję myśli, która zawęża uwagę
+ * do jednego kluczowego problemu.
  */
-const responses = {
-    human: {
-        title: "Odpowiedzialność pozostaje przy nas.",
-        text: "Tylko człowiek może ponieść moralne konsekwencje swoich wyborów. Ale czy zawsze mamy czas i wiedzę, by decydować mądrze?",
-    },
-    ai: {
-        title: "Obiektywność bez emocji.",
-        text: "AI nie zna zmęczenia ani uprzedzeń chwili. Ale czy obiektywność wyuczona z przeszłości jest naprawdę sprawiedliwa?",
-    },
-    neither: {
-        title: "Pytanie nie jest binarne.",
-        text: "Może ważniejsze od 'kto' jest 'jak'. Przyszłość może leżeć we współpracy — AI jako narzędzie, człowiek jako strażnik wartości.",
-    },
-};
+
+const reflectionSequence = [
+    { type: "question", text: "Kto powinien mieć ostatnie słowo?" },
+    { type: "thought", text: "Człowiek zna kontekst, ale bywa zmęczony." },
+    { type: "thought", text: "System jest konsekwentny, ale nie rozumie." },
+    { type: "pause", text: "Może pytanie jest źle postawione." },
+    { type: "insight", text: "Nie chodzi o to, kto decyduje." },
+    { type: "conclusion", text: "Chodzi o to, kto ponosi konsekwencje." },
+];
 
 export default function ReflectionSection() {
-    const sectionRef = useRef(null);
-    const [choice, setChoice] = useState(null);
-    const [isVisible, setIsVisible] = useState(false);
-    const [scrollProgress, setScrollProgress] = useState(0);
+    const containerRef = useRef(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [itemProgress, setItemProgress] = useState(0);
 
     useEffect(() => {
-        const section = sectionRef.current;
-        if (!section) return;
+        const container = containerRef.current;
+        if (!container) return;
 
         const handleScroll = () => {
-            const rect = section.getBoundingClientRect();
+            const rect = container.getBoundingClientRect();
+            const containerHeight = container.offsetHeight;
             const viewportHeight = window.innerHeight;
 
-            if (rect.top < viewportHeight * 0.8 && rect.bottom > 0) {
-                setIsVisible(true);
-            }
+            const scrolled = -rect.top;
+            const scrollableHeight = containerHeight - viewportHeight;
+            const totalProgress = Math.min(1, Math.max(0, scrolled / scrollableHeight));
 
-            const center = rect.top + rect.height / 2;
-            const distanceFromCenter = center - viewportHeight / 2;
-            const normalizedProgress = 0.5 - distanceFromCenter / viewportHeight;
-            setScrollProgress(Math.min(1, Math.max(0, normalizedProgress)));
+            const totalItems = reflectionSequence.length;
+            const progressPerItem = 1 / totalItems;
+            const currentIndex = Math.min(
+                totalItems - 1,
+                Math.floor(totalProgress / progressPerItem)
+            );
+
+            const itemStart = currentIndex * progressPerItem;
+            const progressWithinItem = (totalProgress - itemStart) / progressPerItem;
+
+            setActiveIndex(currentIndex);
+            setItemProgress(Math.min(1, Math.max(0, progressWithinItem)));
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
@@ -68,73 +58,27 @@ export default function ReflectionSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const entranceScale = 0.92 + scrollProgress * 0.1;
-    const entranceOpacity = Math.min(1, scrollProgress * 1.8);
+    const currentItem = reflectionSequence[activeIndex];
+
+    // Fade
+    let opacity = 1;
+    if (itemProgress < 0.15) {
+        opacity = itemProgress / 0.15;
+    } else if (itemProgress > 0.85) {
+        opacity = (1 - itemProgress) / 0.15;
+    }
 
     return (
-        <section
-            ref={sectionRef}
-            className={`${styles.section} ${isVisible ? styles.visible : ""}`}
-        >
-            <div
-                className={styles.background}
-                style={{ opacity: scrollProgress * 0.6 }}
-            />
-
-            <div
-                className={styles.content}
-                style={{
-                    opacity: entranceOpacity,
-                    transform: `scale(${entranceScale})`,
-                }}
-            >
-                {!choice && (
-                    <div className={styles.question}>
-                        <span className={styles.preTitle}>Twoja refleksja</span>
-                        <h2 className={styles.title}>
-                            Kto powinien mieć<br />ostatnie słowo?
-                        </h2>
-                        <p className={styles.subtitle}>To nie głosowanie — to pytanie.</p>
-
-                        <div className={styles.options}>
-                            <button
-                                className={styles.option}
-                                onClick={() => setChoice("human")}
-                                aria-label="Wybierz: Człowiek"
-                            >
-                                <span className={styles.optionIcon}><HumanIcon /></span>
-                                <span className={styles.optionLabel}>Człowiek</span>
-                            </button>
-
-                            <button
-                                className={styles.option}
-                                onClick={() => setChoice("ai")}
-                                aria-label="Wybierz: AI"
-                            >
-                                <span className={styles.optionIcon}><AIIcon /></span>
-                                <span className={styles.optionLabel}>AI</span>
-                            </button>
-
-                            <button
-                                className={`${styles.option} ${styles.optionSmall}`}
-                                onClick={() => setChoice("neither")}
-                                aria-label="Wybierz: Trudno powiedzieć"
-                            >
-                                <span className={styles.optionLabel}>Trudno powiedzieć</span>
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {choice && (
-                    <div className={styles.response}>
-                        <h3 className={styles.responseTitle}>{responses[choice].title}</h3>
-                        <p className={styles.responseText}>{responses[choice].text}</p>
-                        <button className={styles.reset} onClick={() => setChoice(null)}>
-                            Rozważ ponownie
-                        </button>
-                    </div>
-                )}
+        <section ref={containerRef} className={styles.container}>
+            <div className={styles.sticky}>
+                <div className={styles.content}>
+                    <p
+                        className={`${styles.text} ${styles[currentItem.type]}`}
+                        style={{ opacity }}
+                    >
+                        {currentItem.text}
+                    </p>
+                </div>
             </div>
         </section>
     );

@@ -4,7 +4,8 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./ClosingSection.module.css";
 
 /**
- * ClosingSection — Spokojne podsumowanie narracji.
+ * ClosingSection — Domknięcie narracji.
+ * Nie podsumowanie, lecz pozostawienie z jedną myślą.
  */
 export default function ClosingSection() {
     const sectionRef = useRef(null);
@@ -31,42 +32,28 @@ export default function ClosingSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const quoteProgress = Math.min(1, progress * 2.2);
-    const conclusionProgress = Math.min(1, Math.max(0, (progress - 0.3) * 2.5));
-    const footerProgress = Math.min(1, Math.max(0, (progress - 0.6) * 2.5));
+    const quoteProgress = Math.min(1, progress * 2.5);
+    const footerProgress = Math.min(1, Math.max(0, (progress - 0.5) * 2));
 
     return (
         <section ref={sectionRef} className={styles.section}>
             <div className={styles.content}>
-                <blockquote
-                    className={styles.quote}
+                <p
+                    className={styles.closing}
                     style={{
                         opacity: quoteProgress,
-                        transform: `translateY(${(1 - quoteProgress) * 24}px)`,
+                        transform: `translateY(${(1 - quoteProgress) * 20}px)`,
                     }}
                 >
-                    <span className={styles.quoteMark}>"</span>
                     Technologia to narzędzie.<br />
-                    Mądrość to wiedzieć, kiedy go użyć.
-                </blockquote>
-
-                <p
-                    className={styles.conclusion}
-                    style={{
-                        opacity: conclusionProgress,
-                        transform: `translateY(${(1 - conclusionProgress) * 20}px)`,
-                    }}
-                >
-                    AI nie jest zbawcą ani zagrożeniem. Jest lustrem — odbija nasze wartości,
-                    uprzedzenia i nadzieje. Pytanie nie brzmi, czy powinna decydować,
-                    ale jak chcemy żyć w świecie, który tworzymy.
+                    Pytanie brzmi, w czyich rękach.
                 </p>
 
                 <div
                     className={styles.footer}
                     style={{
                         opacity: footerProgress,
-                        transform: `translateY(${(1 - footerProgress) * 12}px)`,
+                        transform: `translateY(${(1 - footerProgress) * 10}px)`,
                     }}
                 >
                     <p className={styles.credit}>Projekt szkolny • 2026</p>
