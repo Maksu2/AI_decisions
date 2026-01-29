@@ -4,26 +4,24 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./ContrastSection.module.css";
 
 /**
- * ContrastSection — Zderzenie dwóch sposobów istnienia decyzji.
- * 
- * Nie porównanie zalet i wad, lecz pokazanie różnicy w odczuciu,
- * odpowiedzialności i konsekwencjach.
+ * ContrastSection — Dwa sposoby istnienia decyzji.
+ * Narracja, nie lista.
  */
 
-const humanPerspective = [
+const humanExperience = [
     "Decyzja zapada powoli.",
     "Czujesz jej ciężar.",
     "Możesz zmienić zdanie.",
-    "Błąd jest Twoim błędem.",
-    "Odpowiedzialność ma twarz.",
+    "Błąd jest twój.",
+    "Wiesz, kto odpowiada.",
 ];
 
-const systemPerspective = [
+const systemExperience = [
     "Decyzja zapada natychmiast.",
     "Nikt jej nie czuje.",
-    "Zmiana wymaga korekty kodu.",
+    "Zmiana wymaga nowego kodu.",
     "Błąd jest statystyką.",
-    "Odpowiedzialność jest rozproszona.",
+    "Nikt nie odpowiada.",
 ];
 
 export default function ContrastSection() {
@@ -52,22 +50,16 @@ export default function ContrastSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Fazy: 0-0.45 = human, 0.45-0.55 = transition, 0.55-1 = system
     const isHumanPhase = progress < 0.45;
     const isSystemPhase = progress > 0.55;
     const isTransition = !isHumanPhase && !isSystemPhase;
 
-    // Oblicz widoczność poszczególnych linii
-    const humanLineCount = humanPerspective.length;
-    const systemLineCount = systemPerspective.length;
-
     const humanProgress = Math.min(1, progress / 0.45);
     const systemProgress = Math.min(1, Math.max(0, (progress - 0.55) / 0.45));
 
-    const visibleHumanLines = Math.floor(humanProgress * (humanLineCount + 1));
-    const visibleSystemLines = Math.floor(systemProgress * (systemLineCount + 1));
+    const visibleHumanLines = Math.floor(humanProgress * (humanExperience.length + 0.5));
+    const visibleSystemLines = Math.floor(systemProgress * (systemExperience.length + 0.5));
 
-    // Opacity dla nagłówków
     const humanHeaderOpacity = isHumanPhase ? 1 : isTransition ? 1 - (progress - 0.45) * 10 : 0;
     const systemHeaderOpacity = isSystemPhase ? 1 : isTransition ? (progress - 0.45) * 10 : 0;
 
@@ -75,7 +67,7 @@ export default function ContrastSection() {
         <section ref={containerRef} className={styles.container}>
             <div className={styles.sticky}>
                 <div className={styles.content}>
-                    {/* Perspektywa ludzka */}
+                    {/* Człowiek */}
                     <div
                         className={`${styles.perspective} ${styles.human}`}
                         style={{ opacity: isHumanPhase || isTransition ? 1 : 0 }}
@@ -87,13 +79,13 @@ export default function ContrastSection() {
                             Gdy decyduje człowiek
                         </h2>
                         <div className={styles.lines}>
-                            {humanPerspective.map((line, index) => (
+                            {humanExperience.map((line, index) => (
                                 <p
                                     key={index}
                                     className={styles.line}
                                     style={{
                                         opacity: visibleHumanLines > index ? 1 : 0,
-                                        transform: `translateY(${visibleHumanLines > index ? 0 : 16}px)`,
+                                        transform: `translateY(${visibleHumanLines > index ? 0 : 12}px)`,
                                     }}
                                 >
                                     {line}
@@ -102,7 +94,7 @@ export default function ContrastSection() {
                         </div>
                     </div>
 
-                    {/* Perspektywa systemowa */}
+                    {/* System */}
                     <div
                         className={`${styles.perspective} ${styles.system}`}
                         style={{ opacity: isSystemPhase || isTransition ? 1 : 0 }}
@@ -114,13 +106,13 @@ export default function ContrastSection() {
                             Gdy decyduje system
                         </h2>
                         <div className={styles.lines}>
-                            {systemPerspective.map((line, index) => (
+                            {systemExperience.map((line, index) => (
                                 <p
                                     key={index}
                                     className={styles.line}
                                     style={{
                                         opacity: visibleSystemLines > index ? 1 : 0,
-                                        transform: `translateY(${visibleSystemLines > index ? 0 : 16}px)`,
+                                        transform: `translateY(${visibleSystemLines > index ? 0 : 12}px)`,
                                     }}
                                 >
                                     {line}

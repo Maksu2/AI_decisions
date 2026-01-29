@@ -1,6 +1,6 @@
 # Transkrypcja tekstów — AI Decisions
 
-Wszystkie teksty z eseju wizualnego "Czy sztuczna inteligencja powinna decydować za ludzi?"
+Esej wizualny "Czy sztuczna inteligencja powinna decydować za ludzi?"
 
 ---
 
@@ -18,35 +18,33 @@ Wszystkie teksty z eseju wizualnego "Czy sztuczna inteligencja powinna decydowa�
 
 ---
 
-## Narracja — Gdzie decyduje AI?
+## Narracja
 
-### Wprowadzenie
 - Każdego dnia algorytmy podejmują miliony decyzji.
-- Większości z nich nie zauważasz.
+- Większości nie zauważasz.
 
-### Medycyna
-- Algorytm analizuje prześwietlenie.
-- *Wykrywa nowotwór szybciej niż lekarz — ale nie powie pacjentowi, że będzie dobrze.*
+**Medycyna**
+Algorytm analizuje prześwietlenie.
+*Znajduje nowotwór szybciej niż lekarz. Nie umie powiedzieć, że będzie dobrze.*
 
-### Finanse
-- System ocenia Twoją zdolność kredytową.
-- *Widzi historię spłat, nie widzi, że właśnie znalazłeś pracę.*
+**Finanse**
+System ocenia zdolność kredytową.
+*Widzi historię spłat. Nie widzi, że właśnie dostałeś pracę.*
 
-### Transport
-- Autonomiczny samochód podejmuje decyzję w ułamku sekundy.
-- *Wybiera, kogo chronić. Nikt nie wie, według jakich zasad.*
+**Transport**
+Autonomiczny samochód decyduje w ułamku sekundy.
+*Wybiera, kogo chronić. Zasady ustala programista.*
 
-### Sprawiedliwość
-- Algorytm sugeruje wyrok.
-- *Uczy się z przeszłości — także z jej niesprawiedliwości.*
+**Sprawiedliwość**
+Algorytm sugeruje wyrok.
+*Uczy się z przeszłości. Przeszłość nie była sprawiedliwa.*
 
-### Rekrutacja
-- AI przegląda Twoje CV.
-- *Zanim człowiek je zobaczy, algorytm już zdecydował.*
+**Rekrutacja**
+AI przegląda CV.
+*Człowiek zobaczy tylko tych, których algorytm przepuścił.*
 
-### Kulminacja
-- To nie jest przyszłość.
-- **To jest teraz.**
+- To nie przyszłość.
+- **To teraz.**
 
 ---
 
@@ -56,21 +54,21 @@ Wszystkie teksty z eseju wizualnego "Czy sztuczna inteligencja powinna decydowa�
 
 ---
 
-## Kontrast — Dwa sposoby istnienia decyzji
+## Kontrast
 
-### Gdy decyduje człowiek
-1. Decyzja zapada powoli.
-2. Czujesz jej ciężar.
-3. Możesz zmienić zdanie.
-4. Błąd jest Twoim błędem.
-5. Odpowiedzialność ma twarz.
+**Gdy decyduje człowiek**
+Decyzja zapada powoli.
+Czujesz jej ciężar.
+Możesz zmienić zdanie.
+Błąd jest twój.
+Wiesz, kto odpowiada.
 
-### Gdy decyduje system
-1. Decyzja zapada natychmiast.
-2. Nikt jej nie czuje.
-3. Zmiana wymaga korekty kodu.
-4. Błąd jest statystyką.
-5. Odpowiedzialność jest rozproszona.
+**Gdy decyduje system**
+Decyzja zapada natychmiast.
+Nikt jej nie czuje.
+Zmiana wymaga nowego kodu.
+Błąd jest statystyką.
+Nikt nie odpowiada.
 
 ---
 
@@ -80,24 +78,21 @@ Wszystkie teksty z eseju wizualnego "Czy sztuczna inteligencja powinna decydowa�
 
 ---
 
-## Refleksja — Sekwencja myśli
+## Refleksja
 
-1. *Kto powinien mieć ostatnie słowo?*
-2. Człowiek zna kontekst, ale bywa zmęczony.
-3. System jest konsekwentny, ale nie rozumie.
-4. Może pytanie jest źle postawione.
-5. **Nie chodzi o to, kto decyduje.**
-6. **Chodzi o to, kto ponosi konsekwencje.**
+*Kto powinien mieć ostatnie słowo?*
+Człowiek zna kontekst. Bywa zmęczony.
+System jest szybki. Nie rozumie.
+**Nie chodzi o to, kto decyduje.**
+**Chodzi o to, kto ponosi konsekwencje.**
 
 ---
 
 ## Zakończenie
 
 > Technologia to narzędzie.
-> Pytanie brzmi, w czyich rękach.
+> Odpowiedzialność za nie — nie.
 
 ---
 
-> Projekt szkolny • 2026
-
-*Wygenerowano: 2026-01-29*
+*2026*

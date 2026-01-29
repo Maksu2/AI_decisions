@@ -4,13 +4,10 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./NarrativeSection.module.css";
 
 /**
- * Sekwencja narracyjna — fakty i ich konsekwencje.
- * 
- * Każda scena prowadzi do jednozdaniowego zderzenia faktu z konsekwencją.
- * Mniej pytań, więcej napięć.
+ * Sekwencja narracyjna — fakty i konsekwencje.
+ * Precyzyjna, rzeczowa, bez abstrakcji.
  */
 const narrativeSequence = [
-    // Wprowadzenie
     {
         id: "intro",
         type: "intro",
@@ -21,10 +18,10 @@ const narrativeSequence = [
         id: "intro-2",
         type: "thought",
         weight: 1.5,
-        title: "Większości z nich nie zauważasz.",
+        title: "Większości nie zauważasz.",
     },
 
-    // Medycyna — fakt + konsekwencja
+    // Medycyna
     {
         id: "medical",
         type: "example",
@@ -35,8 +32,8 @@ const narrativeSequence = [
     {
         id: "medical-consequence",
         type: "consequence",
-        weight: 1.4,
-        title: "Wykrywa nowotwór szybciej niż lekarz — ale nie powie pacjentowi, że będzie dobrze.",
+        weight: 1.5,
+        title: "Znajduje nowotwór szybciej niż lekarz. Nie umie powiedzieć, że będzie dobrze.",
     },
 
     // Finanse
@@ -45,13 +42,13 @@ const narrativeSequence = [
         type: "example",
         weight: 0.9,
         label: "Finanse",
-        title: "System ocenia Twoją zdolność kredytową.",
+        title: "System ocenia zdolność kredytową.",
     },
     {
         id: "finance-consequence",
         type: "consequence",
-        weight: 1.3,
-        title: "Widzi historię spłat, nie widzi, że właśnie znalazłeś pracę.",
+        weight: 1.4,
+        title: "Widzi historię spłat. Nie widzi, że właśnie dostałeś pracę.",
     },
 
     // Transport
@@ -60,13 +57,13 @@ const narrativeSequence = [
         type: "example",
         weight: 1.0,
         label: "Transport",
-        title: "Autonomiczny samochód podejmuje decyzję w ułamku sekundy.",
+        title: "Autonomiczny samochód decyduje w ułamku sekundy.",
     },
     {
         id: "transport-consequence",
         type: "consequence",
-        weight: 1.5,
-        title: "Wybiera, kogo chronić. Nikt nie wie, według jakich zasad.",
+        weight: 1.6,
+        title: "Wybiera, kogo chronić. Zasady ustala programista.",
     },
 
     // Sprawiedliwość
@@ -80,8 +77,8 @@ const narrativeSequence = [
     {
         id: "justice-consequence",
         type: "consequence",
-        weight: 1.4,
-        title: "Uczy się z przeszłości — także z jej niesprawiedliwości.",
+        weight: 1.5,
+        title: "Uczy się z przeszłości. Przeszłość nie była sprawiedliwa.",
     },
 
     // Rekrutacja
@@ -90,27 +87,27 @@ const narrativeSequence = [
         type: "example",
         weight: 1.0,
         label: "Rekrutacja",
-        title: "AI przegląda Twoje CV.",
+        title: "AI przegląda CV.",
     },
     {
         id: "work-consequence",
         type: "consequence",
-        weight: 1.3,
-        title: "Zanim człowiek je zobaczy, algorytm już zdecydował.",
+        weight: 1.4,
+        title: "Człowiek zobaczy tylko tych, których algorytm przepuścił.",
     },
 
     // Kulminacja
     {
         id: "summary",
         type: "conclusion",
-        weight: 2.0,
-        title: "To nie jest przyszłość.",
+        weight: 2.2,
+        title: "To nie przyszłość.",
     },
     {
         id: "summary-2",
         type: "conclusion-accent",
-        weight: 2.5,
-        title: "To jest teraz.",
+        weight: 2.8,
+        title: "To teraz.",
     },
 ];
 
@@ -164,7 +161,6 @@ export default function NarrativeSection() {
 
     const currentItem = narrativeSequence[activeIndex];
 
-    // Fade
     let opacity = 1;
     if (itemProgress < 0.1) {
         opacity = itemProgress / 0.1;
@@ -172,7 +168,6 @@ export default function NarrativeSection() {
         opacity = (1 - itemProgress) / 0.1;
     }
 
-    // Progress bar
     let totalProgressForBar = 0;
     for (let i = 0; i < activeIndex; i++) {
         totalProgressForBar += narrativeSequence[i].weight / totalWeight;
@@ -183,8 +178,6 @@ export default function NarrativeSection() {
         <section ref={containerRef} className={styles.container}>
             <div className={styles.sticky}>
                 <div className={styles.content}>
-                    <p className={styles.sectionLabel}>Gdzie decyduje AI?</p>
-
                     <div
                         className={styles.narrative}
                         style={{ opacity }}

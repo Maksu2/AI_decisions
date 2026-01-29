@@ -4,18 +4,14 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./ReflectionSection.module.css";
 
 /**
- * ReflectionSection — Nieinteraktywna sekwencja refleksji.
- * 
- * Użytkownik nie klika, nie wybiera, nie deklaruje.
- * Jest prowadzony przez sekwencję myśli, która zawęża uwagę
- * do jednego kluczowego problemu.
+ * ReflectionSection — Sekwencja myśli prowadząca do puenty.
+ * Bez metakomentarzy, prosto do sedna.
  */
 
 const reflectionSequence = [
     { type: "question", text: "Kto powinien mieć ostatnie słowo?" },
-    { type: "thought", text: "Człowiek zna kontekst, ale bywa zmęczony." },
-    { type: "thought", text: "System jest konsekwentny, ale nie rozumie." },
-    { type: "pause", text: "Może pytanie jest źle postawione." },
+    { type: "thought", text: "Człowiek zna kontekst. Bywa zmęczony." },
+    { type: "thought", text: "System jest szybki. Nie rozumie." },
     { type: "insight", text: "Nie chodzi o to, kto decyduje." },
     { type: "conclusion", text: "Chodzi o to, kto ponosi konsekwencje." },
 ];
@@ -60,12 +56,11 @@ export default function ReflectionSection() {
 
     const currentItem = reflectionSequence[activeIndex];
 
-    // Fade
     let opacity = 1;
-    if (itemProgress < 0.15) {
-        opacity = itemProgress / 0.15;
-    } else if (itemProgress > 0.85) {
-        opacity = (1 - itemProgress) / 0.15;
+    if (itemProgress < 0.12) {
+        opacity = itemProgress / 0.12;
+    } else if (itemProgress > 0.88) {
+        opacity = (1 - itemProgress) / 0.12;
     }
 
     return (

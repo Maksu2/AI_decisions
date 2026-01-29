@@ -4,8 +4,8 @@ import { useRef, useEffect, useState } from "react";
 import styles from "./ClosingSection.module.css";
 
 /**
- * ClosingSection — Domknięcie narracji.
- * Nie podsumowanie, lecz pozostawienie z jedną myślą.
+ * ClosingSection — Domknięcie.
+ * Spokojne, bez moralizowania, z jasną odpowiedzialnością.
  */
 export default function ClosingSection() {
     const sectionRef = useRef(null);
@@ -32,21 +32,30 @@ export default function ClosingSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const quoteProgress = Math.min(1, progress * 2.5);
-    const footerProgress = Math.min(1, Math.max(0, (progress - 0.5) * 2));
+    const line1Progress = Math.min(1, progress * 3);
+    const line2Progress = Math.min(1, Math.max(0, (progress - 0.25) * 3));
+    const footerProgress = Math.min(1, Math.max(0, (progress - 0.6) * 2.5));
 
     return (
         <section ref={sectionRef} className={styles.section}>
             <div className={styles.content}>
                 <p
-                    className={styles.closing}
+                    className={styles.line1}
                     style={{
-                        opacity: quoteProgress,
-                        transform: `translateY(${(1 - quoteProgress) * 20}px)`,
+                        opacity: line1Progress,
+                        transform: `translateY(${(1 - line1Progress) * 16}px)`,
                     }}
                 >
-                    Technologia to narzędzie.<br />
-                    Pytanie brzmi, w czyich rękach.
+                    Technologia to narzędzie.
+                </p>
+                <p
+                    className={styles.line2}
+                    style={{
+                        opacity: line2Progress,
+                        transform: `translateY(${(1 - line2Progress) * 16}px)`,
+                    }}
+                >
+                    Odpowiedzialność za nie — nie.
                 </p>
 
                 <div
@@ -56,7 +65,7 @@ export default function ClosingSection() {
                         transform: `translateY(${(1 - footerProgress) * 10}px)`,
                     }}
                 >
-                    <p className={styles.credit}>Projekt szkolny • 2026</p>
+                    <p className={styles.credit}>2026</p>
                 </div>
             </div>
         </section>
