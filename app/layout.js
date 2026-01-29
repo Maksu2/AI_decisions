@@ -1,7 +1,5 @@
 import { Geist } from "next/font/google";
 import "./globals.css";
-import { MotionProvider } from "@/contexts/MotionContext";
-import MotionToggle from "@/components/MotionToggle";
 
 /**
  * Font Geist z Vercel — nowoczesny, czytelny.
@@ -35,10 +33,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pl">
       <body className={geist.variable}>
-        <MotionProvider>
-          {children}
-          <MotionToggle />
-        </MotionProvider>
+        {children}
       </body>
     </html>
   );
