@@ -19,6 +19,10 @@ export const metadata = {
   title: "Czy AI powinna decydować za ludzi? | Refleksja",
   description:
     "Interaktywna narracja scroll storytelling eksplorująca pytanie o rolę sztucznej inteligencji w podejmowaniu decyzji za człowieka.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
   openGraph: {
     title: "Czy AI powinna decydować za ludzi?",
     description: "Eksploracja roli AI w podejmowaniu ludzkich decyzji",
