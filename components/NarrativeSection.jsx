@@ -33,7 +33,7 @@ const narrativeSequence = [
         id: "medical-consequence",
         type: "consequence",
         weight: 1.5,
-        title: "Znajduje nowotwór szybciej niż lekarz. Nie umie powiedzieć, że będzie dobrze.",
+        title: "Znajduje nowotwór szybciej niż lekarz. Nie potrafi powiedzieć, że będzie dobrze.",
     },
 
     // Finanse
@@ -63,7 +63,7 @@ const narrativeSequence = [
         id: "transport-consequence",
         type: "consequence",
         weight: 1.6,
-        title: "Wybiera, kogo chronić. Zasady ustala programista.",
+        title: "Wybiera, kogo chronić. Zasady zapisano w kodzie.",
     },
 
     // Sprawiedliwość

@@ -11,7 +11,7 @@ import styles from "./ReflectionSection.module.css";
 const reflectionSequence = [
     { type: "question", text: "Kto powinien mieć ostatnie słowo?" },
     { type: "thought", text: "Człowiek zna kontekst. Bywa zmęczony." },
-    { type: "thought", text: "System jest szybki. Nie rozumie." },
+    { type: "thought", text: "System jest szybki. Nie rozumie konsekwencji." },
     { type: "insight", text: "Nie chodzi o to, kto decyduje." },
     { type: "conclusion", text: "Chodzi o to, kto ponosi konsekwencje." },
 ];
