@@ -110,7 +110,15 @@
 }
 
 .optionIcon {
-    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    transition: color 0.3s ease;
+}
+
+.option:hover .optionIcon {
+    color: var(--color-accent);
 }
 
 .optionLabel {

@@ -4,6 +4,47 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./ReflectionSection.module.css";
 
 /**
+ * Ikony SVG dla opcji wyboru.
+ * Minimalistyczne, pasujące do estetyki Apple.
+ */
+const HumanIcon = () => (
+    <svg
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
+        <circle cx="12" cy="7" r="4" />
+        <path d="M5.5 21a8.5 8.5 0 0 1 13 0" />
+    </svg>
+);
+
+const AIIcon = () => (
+    <svg
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <circle cx="9" cy="10" r="1.5" fill="currentColor" />
+        <circle cx="15" cy="10" r="1.5" fill="currentColor" />
+        <path d="M9 15h6" />
+        <path d="M12 2v2" />
+        <path d="M8 2v1" />
+        <path d="M16 2v1" />
+    </svg>
+);
+
+/**
  * Odpowiedzi refleksyjne po wyborze.
  */
 const responses = {
@@ -23,8 +64,6 @@ const responses = {
 
 /**
  * ReflectionSection — Kulminacyjny element interaktywny.
- * 
- * Wzmocnione wejście animacyjne — sekcja pojawia się jako punkt kulminacyjny.
  */
 export default function ReflectionSection() {
     const sectionRef = useRef(null);
@@ -40,12 +79,10 @@ export default function ReflectionSection() {
             const rect = section.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
 
-            // Kiedy sekcja wchodzi w viewport
             if (rect.top < viewportHeight * 0.8 && rect.bottom > 0) {
                 setIsVisible(true);
             }
 
-            // Progress dla efektów parallax
             const center = rect.top + rect.height / 2;
             const distanceFromCenter = center - viewportHeight / 2;
             const normalizedProgress = 0.5 - distanceFromCenter / viewportHeight;
@@ -66,7 +103,6 @@ export default function ReflectionSection() {
         setChoice(null);
     };
 
-    // Efekty wejścia
     const entranceScale = 0.9 + scrollProgress * 0.15;
     const entranceOpacity = Math.min(1, scrollProgress * 2);
 
@@ -75,12 +111,9 @@ export default function ReflectionSection() {
             ref={sectionRef}
             className={`${styles.section} ${isVisible ? styles.visible : ""}`}
         >
-            {/* Tło z gradientem */}
             <div
                 className={styles.background}
-                style={{
-                    opacity: scrollProgress * 0.8,
-                }}
+                style={{ opacity: scrollProgress * 0.8 }}
             />
 
             <div
@@ -90,7 +123,6 @@ export default function ReflectionSection() {
                     transform: `scale(${entranceScale})`,
                 }}
             >
-                {/* Pytanie */}
                 {!choice && (
                     <div className={styles.question}>
                         <span className={styles.preTitle}>Czas na Twoją refleksję</span>
@@ -105,7 +137,9 @@ export default function ReflectionSection() {
                                 onClick={() => handleChoice("human")}
                                 aria-label="Wybierz: Człowiek"
                             >
-                                <span className={styles.optionIcon}>👤</span>
+                                <span className={styles.optionIcon}>
+                                    <HumanIcon />
+                                </span>
                                 <span className={styles.optionLabel}>Człowiek</span>
                             </button>
 
@@ -114,7 +148,9 @@ export default function ReflectionSection() {
                                 onClick={() => handleChoice("ai")}
                                 aria-label="Wybierz: Sztuczna inteligencja"
                             >
-                                <span className={styles.optionIcon}>🤖</span>
+                                <span className={styles.optionIcon}>
+                                    <AIIcon />
+                                </span>
                                 <span className={styles.optionLabel}>AI</span>
                             </button>
 
@@ -129,7 +165,6 @@ export default function ReflectionSection() {
                     </div>
                 )}
 
-                {/* Odpowiedź */}
                 {choice && (
                     <div className={styles.response}>
                         <h3 className={styles.responseTitle}>{responses[choice].title}</h3>
