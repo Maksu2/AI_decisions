@@ -1,6 +1,6 @@
 /*
  * NarrativeSection — Style
- * Narracyjny ciężar, nie UI.
+ * Scroll-driven sticky z narracją.
  */
 
 .container {
@@ -19,12 +19,11 @@
 }
 
 .content {
-    max-width: 750px;
+    max-width: 800px;
     width: 100%;
-    text-align: center;
     position: relative;
-    /* Stała wysokość — środek zawsze w tym samym miejscu */
-    min-height: 200px;
+    /* Stały kontener dla spójnego osiowania */
+    min-height: 180px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,46 +31,39 @@
 }
 
 .narrative {
-    transition: opacity 0.35s var(--ease-out-expo);
+    transition: opacity 0.3s var(--ease-out-expo);
+    text-align: center;
     width: 100%;
 }
 
 .item {
-    /* Geometria kontrolowana przez content */
+    padding: var(--spacing-md) 0;
 }
 
-/* Hasło tematyczne — lekko powiększone */
+/* Hasło tematyczne — tekst, nie pastylka */
 .category {
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: var(--weight-normal);
     color: var(--color-text-subtle);
     text-transform: uppercase;
-    letter-spacing: 0.25em;
-    margin-bottom: var(--spacing-lg);
+    letter-spacing: 0.2em;
+    margin-bottom: var(--spacing-md);
 }
 
-/* Specjalne traktowanie Sprawiedliwości */
-.categoryJustice {
-    letter-spacing: 0.35em;
-    margin-bottom: var(--spacing-xl);
-}
-
-/* Lead — główne zdanie tematu */
 .title {
-    font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+    font-size: var(--text-section);
     font-weight: var(--weight-semibold);
-    line-height: 1.25;
+    line-height: 1.2;
     letter-spacing: var(--tracking-tight);
-    color: var(--color-text);
 }
 
-/* Typy narracyjne */
+/* Typy */
 .intro .title,
 .thought .title {
     color: var(--color-text-muted);
     font-weight: var(--weight-normal);
-    font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+    font-size: clamp(1.5rem, 4vw, 2.8rem);
 }
 
 .example .title {
@@ -81,17 +73,13 @@
 .consequence .title {
     color: var(--color-text-muted);
     font-weight: var(--weight-normal);
-    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-size: clamp(1.2rem, 3vw, 2rem);
     font-style: italic;
-    line-height: 1.5;
-    max-width: 600px;
-    margin: 0 auto;
 }
 
 .conclusion .title {
     color: var(--color-text-muted);
-    font-weight: var(--weight-normal);
-    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
 }
 
 .conclusion-accent .title {
@@ -101,51 +89,40 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: clamp(2.2rem, 7vw, 4.5rem);
-    font-weight: var(--weight-semibold);
-    letter-spacing: -0.02em;
+    font-size: clamp(2rem, 6vw, 4rem);
 }
 
-/* Progress bar — subtelny, niekolorowy */
+/* Progress bar — niekolorowy */
 .progressBar {
     position: absolute;
-    bottom: -50px;
+    bottom: -40px;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.06);
+    width: 100px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 1px;
     overflow: hidden;
 }
 
 .progressFill {
     height: 100%;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 1px;
-    transition: width 0.15s linear;
+    transition: width 0.1s linear;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .container {
-        min-height: 2200vh;
+        min-height: 2000vh;
     }
 
     .sticky {
         padding: var(--spacing-md);
     }
 
-    .category {
-        font-size: 0.7rem;
-        margin-bottom: var(--spacing-md);
-    }
-
     .title {
-        font-size: clamp(1.3rem, 6vw, 1.8rem);
-    }
-
-    .consequence .title {
-        font-size: clamp(1rem, 4vw, 1.3rem);
+        font-size: clamp(1.3rem, 6vw, 2rem);
     }
 }

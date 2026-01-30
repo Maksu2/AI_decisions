@@ -175,11 +175,6 @@ export default function NarrativeSection() {
     }
     totalProgressForBar += (narrativeSequence[activeIndex].weight / totalWeight) * itemProgress;
 
-    // Specjalna klasa dla Sprawiedliwości
-    const categoryClass = currentItem.labelStyle === "heavy"
-        ? `${styles.category} ${styles.categoryJustice}`
-        : styles.category;
-
     return (
         <section ref={containerRef} className={styles.container}>
             <div className={styles.sticky}>
@@ -190,7 +185,7 @@ export default function NarrativeSection() {
                     >
                         <article className={`${styles.item} ${styles[currentItem.type] || ""}`}>
                             {currentItem.label && (
-                                <span className={categoryClass}>{currentItem.label}</span>
+                                <span className={styles.category}>{currentItem.label}</span>
                             )}
                             <h2 className={styles.title}>{currentItem.title}</h2>
                         </article>
