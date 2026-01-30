@@ -109,7 +109,12 @@
 }
 
 .system .final {
-    color: var(--color-accent);
+    background: linear-gradient(135deg,
+            var(--color-text) 30%,
+            var(--color-text-muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* System — chłodniejszy */
