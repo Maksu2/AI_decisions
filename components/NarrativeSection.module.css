@@ -1,6 +1,6 @@
 /*
  * NarrativeSection — Style
- * Narracyjny ciężar, wspólna oś Y dla wszystkich stanów.
+ * Narracyjny ciężar, nie UI.
  */
 
 .container {
@@ -18,38 +18,32 @@
     padding: var(--spacing-lg);
 }
 
-/* Stały kontener — centrowany raz, nie per-tekst */
 .content {
     max-width: 750px;
     width: 100%;
+    text-align: center;
     position: relative;
-    /* Stała wysokość dla spójnego osiowania */
-    height: 280px;
+    /* Stała wysokość — środek zawsze w tym samym miejscu */
+    min-height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-/* Wrapper na tekst — absolutny, centrowany w stałym kontenerze */
 .narrative {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    text-align: center;
     transition: opacity 0.35s var(--ease-out-expo);
+    width: 100%;
 }
 
 .item {
-    /* Bez dodatkowego paddingu — geometria kontrolowana przez kontener */
+    /* Geometria kontrolowana przez content */
 }
 
-/* Hasło tematyczne — narracyjne, nie UI */
+/* Hasło tematyczne — lekko powiększone */
 .category {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: var(--weight-normal);
     color: var(--color-text-subtle);
     text-transform: uppercase;
@@ -112,7 +106,7 @@
     letter-spacing: -0.02em;
 }
 
-/* Progress bar — subtelniejszy */
+/* Progress bar — subtelny, niekolorowy */
 .progressBar {
     position: absolute;
     bottom: -50px;
@@ -142,12 +136,8 @@
         padding: var(--spacing-md);
     }
 
-    .content {
-        height: 220px;
-    }
-
     .category {
-        font-size: 0.6rem;
+        font-size: 0.7rem;
         margin-bottom: var(--spacing-md);
     }
 
