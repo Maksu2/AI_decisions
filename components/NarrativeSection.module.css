@@ -1,6 +1,6 @@
 /*
  * NarrativeSection — Style
- * Narracyjny ciężar, nie UI.
+ * Narracyjny ciężar, wspólna oś Y dla wszystkich stanów.
  */
 
 .container {
@@ -18,19 +18,32 @@
     padding: var(--spacing-lg);
 }
 
+/* Stały kontener — centrowany raz, nie per-tekst */
 .content {
     max-width: 750px;
     width: 100%;
-    text-align: center;
     position: relative;
+    /* Stała wysokość dla spójnego osiowania */
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
+/* Wrapper na tekst — absolutny, centrowany w stałym kontenerze */
 .narrative {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
     transition: opacity 0.35s var(--ease-out-expo);
 }
 
 .item {
-    padding: var(--spacing-lg) 0;
+    /* Bez dodatkowego paddingu — geometria kontrolowana przez kontener */
 }
 
 /* Hasło tematyczne — narracyjne, nie UI */
@@ -42,7 +55,6 @@
     text-transform: uppercase;
     letter-spacing: 0.25em;
     margin-bottom: var(--spacing-lg);
-    /* Brak tła — cisza przed treścią */
 }
 
 /* Specjalne traktowanie Sprawiedliwości */
@@ -70,7 +82,6 @@
 
 .example .title {
     color: var(--color-text);
-    /* Lead — wyraźniejszy */
 }
 
 .consequence .title {
@@ -129,6 +140,10 @@
 
     .sticky {
         padding: var(--spacing-md);
+    }
+
+    .content {
+        height: 220px;
     }
 
     .category {
