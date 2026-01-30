@@ -3,9 +3,10 @@ import "./globals.css";
 
 /**
  * Font Geist z Vercel — nowoczesny, czytelny.
+ * Subset latin-ext dla polskich znaków.
  */
 const geist = Geist({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   variable: "--font-geist-sans",
   display: "swap",
 });
