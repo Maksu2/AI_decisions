@@ -1,6 +1,7 @@
 /*
  * NarrativeSection — Style
  * Scroll-driven sticky z narracją.
+ * Środek tekstu (nie kontenera) zawsze w tym samym punkcie.
  */
 
 .container {
@@ -22,22 +23,23 @@
     max-width: 800px;
     width: 100%;
     position: relative;
-    /* Stały kontener dla spójnego osiowania */
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* Stały obszar — punkt centralny zawsze w tym samym miejscu */
+    height: 300px;
 }
 
 .narrative {
     transition: opacity 0.3s var(--ease-out-expo);
-    text-align: center;
     width: 100%;
+    /* Absolutne pozycjonowanie — środek tekstu w centrum kontenera */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
 
 .item {
-    padding: var(--spacing-md) 0;
+    /* Bez dodatkowego paddingu */
 }
 
 /* Hasło tematyczne — tekst, nie pastylka */
@@ -95,7 +97,7 @@
 /* Progress bar — niekolorowy */
 .progressBar {
     position: absolute;
-    bottom: -40px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 100px;
@@ -120,6 +122,10 @@
 
     .sticky {
         padding: var(--spacing-md);
+    }
+
+    .content {
+        height: 250px;
     }
 
     .title {
