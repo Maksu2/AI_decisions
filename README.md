@@ -73,6 +73,19 @@ const geist = Geist({
 - `500` — medium (lead lines)
 - `600` — semibold (titles, conclusions)
 
+### Styl: Italic
+
+Tekst typu **consequence** (konsekwencja) używa `font-style: italic`:
+
+```css
+.consequence .title {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+```
+
+To wizualnie odróżnia zdania konsekwencji od zdań lead (np. „Algorytm sugeruje wyrok." vs *„Uczy się z przeszłości. Przeszłość nie była sprawiedliwa."*).
+
 ### Letter-spacing
 
 - `-0.03em` — tight (nagłówki)
